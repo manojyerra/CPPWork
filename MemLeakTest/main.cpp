@@ -19,8 +19,6 @@
 
 int main()
 {
-	new TestClass(10, abc.Temp(), 30)
-
 	TestClass* testClass = (TestClass*)newTrace( TestClass(10,20,30) );
 	
 	deleteTrace( testClass );
