@@ -9,19 +9,5 @@
     <ClCompile Include="source\main.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="source\MemTrace.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="source\TestClass.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="source\MemTrace.h">
-      <Filter>source</Filter>
-    </ClInclude>
-    <ClInclude Include="source\TestClass.h">
-      <Filter>source</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
