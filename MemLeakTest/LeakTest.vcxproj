@@ -10,6 +10,15 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\MemTrace.cpp" />
+    <ClCompile Include="source\TestClass.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\MemTrace.h" />
+    <ClInclude Include="source\TestClass.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC262FCC-B041-412E-BAC7-E5BE9E97E9DC}</ProjectGuid>
     <RootNamespace>LeakTest</RootNamespace>
@@ -77,15 +86,6 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MemTrace.cpp" />
-    <ClCompile Include="TestClass.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MemTrace.h" />
-    <ClInclude Include="TestClass.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
