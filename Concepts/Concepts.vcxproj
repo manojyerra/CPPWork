@@ -11,7 +11,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\Base.cpp" />
+    <ClCompile Include="source\DefinesAndIncludes.cpp" />
+    <ClCompile Include="source\Derived1.cpp" />
     <ClCompile Include="source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\Base.h" />
+    <ClInclude Include="source\DefinesAndIncludes.h" />
+    <ClInclude Include="source\Derived1.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BC262FCC-B041-412E-BAC7-E5BE9E97E9DC}</ProjectGuid>

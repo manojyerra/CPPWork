@@ -9,5 +9,25 @@
     <ClCompile Include="source\main.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\DefinesAndIncludes.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Base.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Derived1.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\DefinesAndIncludes.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Base.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Derived1.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
