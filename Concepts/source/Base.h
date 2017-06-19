@@ -12,6 +12,8 @@ public:
 	virtual void Method1();
 	void Method2();
 
+	virtual void Method4() = 0;
+
 	virtual ~Base();
 };
 

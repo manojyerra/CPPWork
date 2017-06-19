@@ -18,6 +18,15 @@
     <ClCompile Include="source\Derived1.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\Derived1Derived.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Temp.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="source\Derived2.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\DefinesAndIncludes.h">
@@ -27,6 +36,15 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\Derived1.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Derived1Derived.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Temp.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Derived2.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
