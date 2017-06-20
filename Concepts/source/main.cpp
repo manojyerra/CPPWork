@@ -11,53 +11,64 @@ void VirtualKeyWordUsage();
 void StaticAndDynamicCast();
 void EvalueStatements();
 
+void ThreadsExample();
 void Thread1Method();
 void Thread2Method();
 
 
 int main()
 {
+	ThreadsExample();
+
 	EvalueStatements();
 
 	VirtualKeyWordUsage();
 
 	StaticAndDynamicCast();
 
+	print("\n\n************** End of program **************\n\n");
+	return 0;
+}
+
+
+void ThreadsExample()
+{
 	std::thread thread1 (Thread1Method); 
 	std::thread thread2 (Thread2Method); 
 	
 	// synchronize threads...
 	thread1.join();					// pauses until first finishes
 	thread2.join();					// pauses until second finishes
-
-	print("\n\n************** End of program **************\n\n");
-	return 0;
 }
+
 
 void Thread1Method()
 {
 	print("\n");
 
-	for(int i=0; i<100; i++)
+	for(int i=0; i<50; i++)
 	{
 		print("\nFrom Thread1Method %d", i);
+		Sleep(5);
 	}
 }
+
 
 void Thread2Method()
 {
 	print("\n");
 
-	for(int i=0; i<100; i++)
+	for(int i=0; i<50; i++)
 	{
 		print("\nFrom Thread2Method %d", i);
+		Sleep(5);
 	}
 }
 
 
 void EvalueStatements()
 {
-	int a = 123;
+	int a = 10;
 	int* b = &a;
 
 	print("\n starting values \n a = %d, *b = %d, address of b = %d", a, (*b), b);
@@ -66,9 +77,7 @@ void EvalueStatements()
 	print("\n after (*b)++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
 
 	b++;
-
 	print("\n after b++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
-
 }
 
 
@@ -173,6 +182,8 @@ void VirtualKeyWordUsage()
 9. dynamic casting and static casting and interprete casting
 7. Private virtual functions behavior in run time polymorphism
 8. virtual destructors
+11. Multi Threading, Semaphores and Metaphores
+
 
 
 1. Containers in c++		http://www.geeksforgeeks.org/the-c-standard-template-library-stl/
@@ -190,7 +201,6 @@ void VirtualKeyWordUsage()
 5. What is class, object, encapsulation, inheritance(MultiLevel, Multiple, Single), Runtime polymorphism.
 
 10. Data Structures
-11. Multi Threading, Semaphores and Metaphores
 12. Map, Vectors Usage and Advantages and dis-advantages
 13. Sorted Map and UnSorted Map usage
 14. Mutable array and unMutable array
