@@ -10,6 +10,7 @@
 void VirtualKeyWordUsage();
 void StaticAndDynamicCast();
 void EvalueStatements();
+void BitwiseOperators();
 
 void ThreadsExample();
 void Thread1Method();
@@ -18,6 +19,8 @@ void Thread2Method();
 
 int main()
 {
+	BitwiseOperators();
+
 	ThreadsExample();
 
 	EvalueStatements();
@@ -30,6 +33,107 @@ int main()
 	return 0;
 }
 
+void BitwiseOperators()
+{
+	// http://www.geeksforgeeks.org/interesting-facts-bitwise-operators-c/
+
+	//& (bitwise AND) Takes two numbers as operand and does AND on every bit of two numbers. 
+	//The result of AND is 1 only if both bits are 1.
+
+	{
+	int a = 2;				//binary value is 10
+	int b = 3;				//binary value is 11
+	int c = a & b;			//binary result   10	-> 2
+	printf("c = %d", c);
+	}
+
+	{
+	int a = 8;				//binary value is 1000
+	int b = 3;				//binary value is 0011
+	int c = a & b;			//binary result   0000	-> 0
+	printf("c = %d", c);
+	}
+
+	{
+	int a = 2;				//binary value is 010
+	int b = 3;				//binary value is 011
+	int c = 4;				//binary value is 100
+	int d = a & b & c;		//binary result   000	-> 0
+	printf("d = %d", d);
+	}
+
+
+	//| (bitwise OR) Takes two numbers as operand and does OR on every bit of two numbers. 
+	//The result of OR is 1 any of the two bits is 1.
+
+	{
+	int a = 8;				//binary value is 1000
+	int b = 3;				//binary value is 0011
+	int c = a | b;			//binary result   1011	-> 11
+	printf("c = %d", c);
+	}
+
+
+	//^ (bitwise XOR) Takes two numbers as operand and does XOR on every bit of two numbers. 
+	//The result of XOR is 1 if the two bits are different..
+
+	{
+	int a = 8;				//binary value is 1000
+	int b = 3;				//binary value is 0011
+	int c = a ^ b;			//binary result   1011	-> 11
+	printf("c = %d", c);
+	}
+
+	//<< (left shift) Takes two numbers, left shifts the bits of first operand, 
+	//the second operand decides the number of places to shift.
+
+	{
+	int a = 3;				//binary value is 11
+	int b = 2;				
+	int c = a << b;			//binary result   1100	-> 12
+	printf("c = %d", c);
+	}
+
+	{
+	int a = 8;				//binary value is 1000
+	int b = 2;				
+	int c = a << b;			//binary result   100000	-> 32
+	printf("c = %d", c);
+	}
+
+	//>> (right shift) Takes two numbers, right shifts the bits of first operand, 
+	//the second operand decides the number of places to shift.
+
+	{
+	int a = 32;				//binary value is 100000
+	int b = 2;				
+	int c = a >> b;			//binary result   1000	-> 8
+	printf("c = %d", c);
+	}
+
+	{
+	int a = 8;				//binary value is 1000
+	int b = 2;				
+	int c = a >> b;			//binary result   10	-> 2
+	printf("c = %d", c);
+	}
+
+	//~ (bitwise NOT) Takes one number and inverts all bits of it
+
+	{
+	unsigned int a = 8;				//binary value is 00000000000000000000000000001000
+	unsigned int b = ~a;			//binary vlaue is 11111111111111111111111111110111		->	4294967287
+	printf("b = %d", b);
+	}
+
+	{
+	int a = 8;						//binary value is 00000000000000000000000000001000
+	int b = ~a;						//binary vlaue is 11111111111111111111111111110111		->	4294967287
+	int c = 4294967287;				//value is 9
+	printf("b = %d", b);
+	}
+
+}
 
 void ThreadsExample()
 {
