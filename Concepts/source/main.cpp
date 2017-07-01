@@ -11,6 +11,8 @@ void VirtualKeyWordUsage();
 void StaticAndDynamicCast();
 void EvalueStatements();
 void BitwiseOperators();
+void DifferenceBetweenCandCPP();
+void WhatIsThisKeyword();
 
 void ThreadsExample();
 void Thread1Method();
@@ -19,6 +21,10 @@ void Thread2Method();
 
 int main()
 {
+	DifferenceBetweenCandCPP();
+
+	WhatIsThisKeyword();
+
 	BitwiseOperators();
 
 	ThreadsExample();
@@ -31,6 +37,29 @@ int main()
 
 	print("\n\n************** End of program **************\n\n");
 	return 0;
+}
+
+void DifferenceBetweenCandCPP()
+{
+	//What are the differences between C and C++?
+	//1) C++ is a kind of superset of C.
+	//2) C is a procedural programming language, but C++ supports both procedural and Object Oriented programming.
+	//3) Since C++ supports object oriented programming, it supports features like function overloading, templates, 
+	//	inheritance, virtual functions, friend functions. These features are absent in C.
+	//4) C++ supports exception handling at language level, in C exception handling is done in traditional if-else style.
+	//5) C++ supports references, C doesn’t.
+	//6) In C, scanf() and printf() are mainly used input/output. C++ mainly uses streams to perform input and output operations. 
+	//	cin is standard input stream and cout is standard output stream.
+}
+
+void WhatIsThisKeyword()
+{
+	//What is this pointer?
+	//The ‘this’ pointer is passed as a hidden argument to all nonstatic member function calls and is 
+	//available as a local variable within the body of all nonstatic functions.
+	//‘this’ pointer is a constant pointer that holds the memory address of the current object. 
+	//‘this’ pointer is not available in static member functions as static member 
+	//functions can be called without any object (with class name).
 }
 
 void BitwiseOperators()
@@ -96,8 +125,11 @@ void BitwiseOperators()
 
 	{
 	int a = 8;				//binary value is 1000
-	int b = 2;				
-	int c = a << b;			//binary result   100000	-> 32
+	int b = 1;				
+	int c = a << b;			//binary result   10000	-> 16
+	
+	//c = a * 2 pow(b);
+
 	printf("c = %d", c);
 	}
 
@@ -108,6 +140,9 @@ void BitwiseOperators()
 	int a = 32;				//binary value is 100000
 	int b = 2;				
 	int c = a >> b;			//binary result   1000	-> 8
+
+	//c = a * (1 / 2 pow(b));
+
 	printf("c = %d", c);
 	}
 
@@ -129,9 +164,16 @@ void BitwiseOperators()
 	{
 	int a = 8;						//binary value is 00000000000000000000000000001000
 	int b = ~a;						//binary vlaue is 11111111111111111111111111110111		->	4294967287
-	int c = 4294967287;				//value is 9
+	int c = 4294967287;				//value is -9
 	printf("b = %d", b);
 	}
+
+	unsigned int color = 0xee00ff77;
+
+	unsigned int r = (color) >> 24;		
+	unsigned int g = (color << 8)  >> 24;
+	unsigned int b = (color << 16) >> 24;
+	unsigned int a = (color << 24) >> 24;
 
 }
 
