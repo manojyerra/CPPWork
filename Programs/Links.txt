@@ -1,0 +1,2 @@
+http://www.geeksforgeeks.org/converting-string-to-number-and-vice-versa-in-c/
+http://www.geeksforgeeks.org/second-repeated-word-sequence/
