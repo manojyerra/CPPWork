@@ -1,2 +1,3 @@
 http://www.geeksforgeeks.org/converting-string-to-number-and-vice-versa-in-c/
 http://www.geeksforgeeks.org/second-repeated-word-sequence/
+https://software.intel.com/en-us/articles/the-ultimate-question-of-programming-refactoring-and-everything?utm_campaign=IHI-HPC-Q4_16&utm_medium=Syndication&utm_source=Taboola&utm_content=&utm_term=&utm_source=taboola&utm_medium=referral
