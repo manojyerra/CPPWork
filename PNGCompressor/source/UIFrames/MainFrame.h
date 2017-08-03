@@ -16,24 +16,13 @@ class MainFrame : public SUIActionListener
 private:
 	SUIFrame* _frame;
 	
-	SUIRadioButton* projRadio;
-	SUIRadioButton* pivot;
+	SUIButton* _browseSingle;
+	SUIButton* _browseMulti;
+	SUIButton* _browseFolder;
 
-	SUICheckBox* floorVisible;
-	SUICheckBox* showAxis;
-	SUICheckBox* showGrid;
-	SUICheckBox* showGridLines;
+	SUICheckBox* _level1;
+	SUICheckBox* _level2;
 
-	SUICheckBox* enablePhysics;
-	SUICheckBox* pausePhysics;
-	SUICheckBox* showMarkedObjs;
-	SUICheckBox* showUnmarkedObjs;
-	SUIButton* markAllObjs;
-	SUIButton* unmarkAllObjs;
-	SUICheckBox* showBoundShapes;
-	SUICheckBox* showBoundBox;
-	SUICheckBox* onBorder;
-	SUIButton* changeViewBtn;
 
 public:
 	MainFrame(int x, int y, int w, int h);

@@ -11,8 +11,9 @@ Looper::Looper(int windowWidth, int windowHeight)
 
 	SUISetup((int)_windowW, (int)_windowH);
 
-	_mainFrame = new MainFrame(10,10,300,500);
-	_mainFrame->SetMaximize( true );
+	_mainFrame = new MainFrame(0,0,_windowW,_windowH);
+
+	//_mainFrame->SetMaximize( true );
 }
 
 void Looper::Draw(float deltaTime)

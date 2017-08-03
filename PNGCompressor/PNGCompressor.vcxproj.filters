@@ -232,6 +232,9 @@
     <ClCompile Include="source\SUI\SUIKeyCombi.cpp">
       <Filter>source\SUI</Filter>
     </ClCompile>
+    <ClCompile Include="source\Util\UtilFuncs.cpp">
+      <Filter>source\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CFileReader.h">
@@ -398,6 +401,9 @@
     </ClInclude>
     <ClInclude Include="source\SUI\SUIKeyCombi.h">
       <Filter>source\SUI</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Util\UtilFuncs.h">
+      <Filter>source\Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

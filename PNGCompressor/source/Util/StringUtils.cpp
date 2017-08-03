@@ -74,3 +74,35 @@ bool StringUtils::endsWith(string str, string checkStr)
 
 	return true;
 }
+
+string StringUtils::insertAt(int index, string str, string insertSrt)
+{
+	if(index > str.length() || index < 0)
+		return str;
+
+	int len = str.length();
+
+	if(index == 0)
+	{
+		string result( insertSrt.c_str() );
+		result.append( str );
+
+		return result;
+	}
+	else if(index == len)
+	{
+		string result( str.c_str() );
+		result.append( insertSrt );
+
+		return result;
+	}
+	else
+	{
+		string subStr1 = str.substr(0, index);
+		string subStr2 = str.substr(index, len);
+
+		return subStr1.append(insertSrt).append(subStr2);
+	}
+
+	return "";
+}

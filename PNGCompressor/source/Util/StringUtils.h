@@ -10,7 +10,8 @@ class StringUtils
 public:
 	static vector<string> split(string str, char splitBy);
 	static bool startsWith(string str, string checkStr);
-	static bool endsWith(string str, string checkStr);	
+	static bool endsWith(string str, string checkStr);
+	static string insertAt(int index, string str, string insertSrt);
 };
 
 #endif
