@@ -14,6 +14,8 @@ private:
 	void ReCreateMem();
 
 public:
+	static int memCreateTime;
+
 	VecUInt();
 	VecUInt(unsigned int capacity);
 	~VecUInt();

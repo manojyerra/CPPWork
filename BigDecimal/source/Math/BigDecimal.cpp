@@ -2,6 +2,10 @@
 #include "BaseConverter.h"
 #include "DefinesAndIncludes.h"
 
+int BigDecimal::addCount = 0;
+int BigDecimal::mulCount = 0;
+int BigDecimal::divCount = 0;
+
 BigDecimal::BigDecimal()
 {
 	vec.push_back(0);
@@ -88,7 +92,7 @@ void BigDecimal::LeftShift32Bits()
 
 	vec.push_back(0);
 
-	for(unsigned int i=size-1; i>0; i--)
+	for(int i=size-1; i>=0; i--)
 	{
 		vec[i+1] = vec[i];
 	}
@@ -103,13 +107,27 @@ void BigDecimal::LeftShift32BitsMultiple(int multiple)
 	for(int i=0; i<multiple; i++)
 		vec.push_back(0);
 
-	for(unsigned int i=size-1; i>0; i--)
+	for(int i=size-1; i>=0; i--)
 	{
 		vec[i+multiple] = vec[i];
 	}
 
 	for(int i=0; i<multiple; i++)
 		vec[i] = 0;
+}
+
+void BigDecimal::RightShift32Bits()
+{
+	unsigned int size = vec.size();
+
+	vec.push_back(0);
+
+	for(int i=1; i<size; i++)
+	{
+		vec[i-1] = vec[i];
+	}
+
+	vec.pop_back();
 }
 
 void BigDecimal::RightShift_LessThan32(int rightShiftBits)
@@ -146,9 +164,47 @@ void BigDecimal::MultiplyBy2()
 
 void BigDecimal::DivideBy2()
 {
+	unsigned long startTime = GetTickCount();
+
 	RightShift_LessThan32(1);
 	//str = ToString();
+
+	divCount += GetTickCount() - startTime;
 }
+
+void BigDecimal::DivideBy2Power(int power)
+{
+	if(power <= 0)
+		return;
+
+	int sizeOfUInt = sizeof(unsigned int) * 8;
+
+	int numIndexShift = power / sizeOfUInt;
+	int remainderBits = power % sizeOfUInt;
+
+	for(int i=0; i<numIndexShift; i++)
+		RightShift32Bits();
+
+	if(remainderBits > 0)
+		RightShift_LessThan32( remainderBits );
+}
+
+
+char BigDecimal::GetBitValue(unsigned int index)
+{
+	unsigned int arrIndex = index / 32;
+	unsigned int bitIndex = index % 32;
+
+	if(arrIndex >= vec.size())
+		return -1;
+
+	unsigned int val = vec[arrIndex];
+
+	unsigned short leftShift = 31 - bitIndex;
+
+	return ((val << leftShift) >> 31);
+}
+
 
 void BigDecimal::MultiplyBy2Power(int power)
 {
@@ -160,76 +216,132 @@ void BigDecimal::MultiplyBy2Power(int power)
 	int numIndexShift = power / sizeOfUInt;
 	int remainderBits = power % sizeOfUInt;
 
-	for(int i=0; i<numIndexShift; i++)
-	{
-		LeftShift32Bits();
-	}
+	//for(int i=0; i<numIndexShift; i++)
+	//	LeftShift32Bits();
 
-	//LeftShift32BitsMultiple(numIndexShift);
+	LeftShift32BitsMultiple(numIndexShift);
 
 	if(remainderBits > 0)
 		LeftShift_LessThan32( remainderBits );
 }
 
-BigDecimal* BigDecimal::Multiply(BigDecimal* bOriginal)
+
+BigDecimal* BigDecimal::Multiply(BigDecimal* b)
 {
 	BigDecimal* result = new BigDecimal();
-	BigDecimal* b = new BigDecimal(bOriginal);
-
-	//result->vec.reserve( bOriginal->vec.size() + vec.size() + 10 );
-
-	//int count = 0;
 
 	int twoPower = 0;
+	int bitIndex = 0;
 
-	while(!b->IsZero())
+	char bitVal = b->GetBitValue(bitIndex);
+
+	int loopCount = 0;
+
+	while(bitVal >= 0)
 	{
-		//count++;
+		loopCount++;
 
-		//writeConsole("\ncount   : %d",count);
+		//if(b->IsOddNumber())
 
-		if (b->IsOddNumber())
+		if(bitVal == 1)
 		{
-			//writeConsole("\nBis Odd. before.\nA value   : %s",this->ToString().c_str());
-			//writeConsole("\nB value   : %s",b->ToString().c_str());
-			//writeConsole("\nR value   : %s\n\n",result->ToString().c_str());
-
 			if(twoPower > 0)
 			{
 				MultiplyBy2Power( twoPower );
+
 				twoPower = 0;
 			}
 
 			result->Add(this);
-		
-			//writeConsole("\nBis Odd. after .\nA value   : %s",this->ToString().c_str());
-			//writeConsole("\nB value   : %s",b->ToString().c_str());
-			//writeConsole("\nR value   : %s\n\n",result->ToString().c_str());
 		}
 
-
-		//MultiplyBy2();
 		twoPower++;
+		bitIndex++;
 
-		b->DivideBy2();
+		bitVal = b->GetBitValue(bitIndex);
 
-		//writeConsole("\nA value   : %s",this->ToString().c_str());
-		//writeConsole("\nB value   : %s",b->ToString().c_str());
-		//writeConsole("\nR value   : %s\n\n",result->ToString().c_str());
+		//b->DivideBy2();
 	}
-
-	//writeConsole("\nResult value   : %s\n\n",result->ToString().c_str());
-
-	delete b;
+	
+	writeConsole("\nLoop count : %d",loopCount);
+	//delete b;
 
 	return result;
 }
 
+void BigDecimal::Add(BigDecimal* b)
+{
+	unsigned long startTime = GetTickCount();
+
+	if(vec.size() < b->vec.size())
+	{
+		while(vec.size() < b->vec.size())
+			vec.push_back(0);
+	}
+
+	vec.push_back(0);
+
+	unsigned int vecSize = vec.size();
+	unsigned int bVecSize = b->vec.size();
+
+	uint64_t sum = 0;
+	unsigned int carry = 0;
+
+	for(int i=0; i<vecSize; i++)
+	{
+		//sum = (i < bVecSize) ? (uint64_t)(vec[i] + b->vec[i] + carry) : (uint64_t)(vec[i] + carry);
+
+		if(i < bVecSize)
+		{
+			sum = vec[i];
+			sum += b->vec[i];
+			sum += carry;
+		}
+		else
+		{
+			sum = vec[i];
+			sum += carry;
+		}
+
+		vec[i] = (unsigned int) ((sum << 32) >> 32);
+
+		carry = (unsigned int) (sum >> 32);
+
+		if(i >= bVecSize)
+		{
+			if(carry == 0)
+				break;
+		}
+	}
+
+	int popCount = 0;
+
+	for(int i=vecSize-1; i>=0; i--)
+	{
+		if(vec[i] == 0)
+			popCount++;
+		else
+			break;
+	}
+
+	for(int i=0; i<popCount; i++)
+	{
+		vec.pop_back();
+	}
+
+	//str = ToString();
+
+	addCount += GetTickCount() - startTime;
+}
 
 
 string BigDecimal::ToString()
 {
-	//return "";
+	writeConsole("\naddcount : %d",addCount);
+	writeConsole("\nmulcount : %d",mulCount);
+	writeConsole("\ndivcount : %d",divCount);
+	writeConsole("\nMem recreate time : %d", VecUInt::memCreateTime);
+	writeConsole("\nResult len : %d\n", vec.size());
 
 	const BaseConverter& dec2hex = BaseConverter::DecimalToHexConverter();
 
@@ -277,66 +389,4 @@ string BigDecimal::ToString()
 	str = hex2dec.Convert(hexString);
 
 	return str;
-}
-
-
-void BigDecimal::Add(BigDecimal* b)
-{
-	if(vec.size() < b->vec.size())
-	{
-		while(vec.size() < b->vec.size())
-			vec.push_back(0);
-	}
-
-	vec.push_back(0);
-
-	unsigned int vecSize = vec.size();
-	unsigned int bVecSize = b->vec.size();
-
-	uint64_t sum = 0;
-	unsigned int carry = 0;
-
-	for(int i=0; i<vecSize; i++)
-	{
-		//sum = (i < bVecSize) ? vec[i] + b->vec[i] + carry : vec[i] + carry;
-
-		if(i < bVecSize)
-		{
-			sum = vec[i];
-			sum += b->vec[i];
-			sum += carry;
-		}
-		else
-		{
-			sum = vec[i];
-			sum += carry;
-		}
-
-		vec[i] = (unsigned int) ((sum << 32) >> 32);
-
-		carry = (unsigned int) (sum >> 32);
-
-		if(i >= bVecSize)
-		{
-			if(carry == 0)
-				break;
-		}
-	}
-
-	int popCount = 0;
-
-	for(int i=vecSize-1; i>=0; i--)
-	{
-		if(vec[i] == 0)
-			popCount++;
-		else
-			break;
-	}
-
-	for(int i=0; i<popCount; i++)
-	{
-		vec.pop_back();
-	}
-
-	//str = ToString();
 }

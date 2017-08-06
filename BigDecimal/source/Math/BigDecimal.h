@@ -15,10 +15,16 @@ private:
 	void LeftShift32BitsMultiple(int multiple);
 
 	void RightShift_LessThan32(int shiftBits);
+	void RightShift32Bits();
+
 	void MultiplyBy2();
+	void DivideBy2();
+
+	static int addCount;
+	static int mulCount;
+	static int divCount;
 
 public:
-	//vector<unsigned int> vec;
 	VecUInt vec;
 
 	string str;
@@ -32,10 +38,15 @@ public:
 	bool IsOddNumber();
 	bool IsZero();
 
-	void MultiplyBy2Power(int power);
 	BigDecimal* Multiply(BigDecimal* bigDecimal);
-	void DivideBy2();
+	void MultiplyBy2Power(int power);
+
+	void DivideBy2Power(int power);
+
 	void Add(BigDecimal* bigDecimal);
+
+	char GetBitValue(unsigned int index);
+
 
 	string ToString();
 };

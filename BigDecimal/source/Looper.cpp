@@ -9,121 +9,154 @@
 #include "Util/VecUInt.h"
 #include "Util/CVector.h"
 
-
-void shift_left(unsigned char *ar, int size, int leftShift)
-{
-	if(size <= 0)
-		return;
-
-	unsigned char carry = 0;
-
-	ar[0] <<= leftShift;
-
-	int rightShift = 8-leftShift;
-
-	for(int i=1; i<size; i++)
-	{
-		carry = ar[i] >> rightShift;
-		ar[i] <<= leftShift;
-		ar[i-1] |= carry;
-	}
-}
-
-int bitwiseadd(int x, int y)
-{
-    while (y != 0)
-    {
-        int carry = x & y;
-        x = x ^ y; 
-        y = carry << 1;
-    }
-    return x;
-}
-
-uint64_t bitwiseMultiply(uint64_t a, uint64_t b)
-{
-   uint64_t result = 0;
-   int count = 0;
-   
-   while(b != 0)               // Iterate the loop till b==0
-   {
-	   count++;
-
-	   writeConsole("\ncount   : %d",count);
-
-        if (b&01)                // Bitwise &  of the value of b with 01
-        {
-			writeConsole("\nBis Odd. before.\nA value   : %llu",a);
-			writeConsole("\nB value   : %llu",b);
-			writeConsole("\nR value   : %llu\n\n",result);
-						
-			result += a;
-
-			writeConsole("\nBis Odd. after .\nA value   : %llu",a);
-			writeConsole("\nB value   : %llu",b);
-			writeConsole("\nR value   : %llu\n\n",result);
-        }
-
-        a<<=1;
-        b>>=1;
-
-		writeConsole("\nA value   : %llu",a);
-		writeConsole("\nB value   : %llu",b);
-		writeConsole("\nR value   : %llu\n\n",result);
-   }
-
-   writeConsole("\nResult value   : %llu\n\n",result);
-   return result;
-}
-
-static const std::string base64_chars = 
-             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-             "abcdefghijklmnopqrstuvwxyz"
-             "0123456789+/";
-
-std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
-  std::string ret;
-  int i = 0;
-  int j = 0;
-  unsigned char char_array_3[3];
-  unsigned char char_array_4[4];
-
-  while (in_len--) {
-    char_array_3[i++] = *(bytes_to_encode++);
-    if (i == 3) {
-      char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
-      char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-      char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-      char_array_4[3] = char_array_3[2] & 0x3f;
-
-      for(i = 0; (i <4) ; i++)
-        ret += base64_chars[char_array_4[i]];
-      i = 0;
-    }
-  }
-
-  if (i)
-  {
-    for(j = i; j < 3; j++)
-      char_array_3[j] = '\0';
-
-    char_array_4[0] = ( char_array_3[0] & 0xfc) >> 2;
-    char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
-    char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
-
-    for (j = 0; (j < i + 1); j++)
-      ret += base64_chars[char_array_4[j]];
-
-    while((i++ < 3))
-      ret += '=';
-
-  }
-
-  return ret;
-}
-
 Looper::Looper(int windowWidth, int windowHeight)
 {
+	uint64_t val1 = 78948752;
+	uint64_t val2 = 45458755;
+
+	BigDecimal bigDecimal1(val1);
+	BigDecimal bigDecimal2(val2);
+
+	bigDecimal1.MultiplyBy2Power(100000);
+	bigDecimal2.MultiplyBy2Power(800000);
+
+	unsigned long startTime = GetTickCount();
+
+	BigDecimal* result = bigDecimal1.Multiply(&bigDecimal2);
+
+	unsigned long timeTaken = GetTickCount() - startTime;
+
+	writeConsole("\nTime taken :%lu\n",timeTaken);
+
+	string resultStr = result->ToString();
+
+	writeConsole("\nResult Len: %d\n\n",resultStr.length());
+	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
+}
+
+void Looper::Draw(float deltaTime)
+{
+}
+
+Looper::~Looper()
+{
+}
+
+//
+//void shift_left(unsigned char *ar, int size, int leftShift)
+//{
+//	if(size <= 0)
+//		return;
+//
+//	unsigned char carry = 0;
+//
+//	ar[0] <<= leftShift;
+//
+//	int rightShift = 8-leftShift;
+//
+//	for(int i=1; i<size; i++)
+//	{
+//		carry = ar[i] >> rightShift;
+//		ar[i] <<= leftShift;
+//		ar[i-1] |= carry;
+//	}
+//}
+//
+//int bitwiseadd(int x, int y)
+//{
+//    while (y != 0)
+//    {
+//        int carry = x & y;
+//        x = x ^ y; 
+//        y = carry << 1;
+//    }
+//    return x;
+//}
+//
+//uint64_t bitwiseMultiply(uint64_t a, uint64_t b)
+//{
+//   uint64_t result = 0;
+//   int count = 0;
+//   
+//   while(b != 0)               // Iterate the loop till b==0
+//   {
+//	   count++;
+//
+//	   writeConsole("\ncount   : %d",count);
+//
+//        if (b&01)                // Bitwise &  of the value of b with 01
+//        {
+//			writeConsole("\nBis Odd. before.\nA value   : %llu",a);
+//			writeConsole("\nB value   : %llu",b);
+//			writeConsole("\nR value   : %llu\n\n",result);
+//						
+//			result += a;
+//
+//			writeConsole("\nBis Odd. after .\nA value   : %llu",a);
+//			writeConsole("\nB value   : %llu",b);
+//			writeConsole("\nR value   : %llu\n\n",result);
+//        }
+//
+//        a<<=1;
+//        b>>=1;
+//
+//		writeConsole("\nA value   : %llu",a);
+//		writeConsole("\nB value   : %llu",b);
+//		writeConsole("\nR value   : %llu\n\n",result);
+//   }
+//
+//   writeConsole("\nResult value   : %llu\n\n",result);
+//   return result;
+//}
+//
+//static const std::string base64_chars = 
+//             "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+//             "abcdefghijklmnopqrstuvwxyz"
+//             "0123456789+/";
+//
+//std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+//  std::string ret;
+//  int i = 0;
+//  int j = 0;
+//  unsigned char char_array_3[3];
+//  unsigned char char_array_4[4];
+//
+//  while (in_len--) {
+//    char_array_3[i++] = *(bytes_to_encode++);
+//    if (i == 3) {
+//      char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+//      char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+//      char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+//      char_array_4[3] = char_array_3[2] & 0x3f;
+//
+//      for(i = 0; (i <4) ; i++)
+//        ret += base64_chars[char_array_4[i]];
+//      i = 0;
+//    }
+//  }
+//
+//  if (i)
+//  {
+//    for(j = i; j < 3; j++)
+//      char_array_3[j] = '\0';
+//
+//    char_array_4[0] = ( char_array_3[0] & 0xfc) >> 2;
+//    char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+//    char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+//
+//    for (j = 0; (j < i + 1); j++)
+//      ret += base64_chars[char_array_4[j]];
+//
+//    while((i++ < 3))
+//      ret += '=';
+//
+//  }
+//
+//  return ret;
+//}
+
+
+
 	//unsigned int temp = 23;
 
 	//temp = temp >> 1;
@@ -259,39 +292,3 @@ Looper::Looper(int windowWidth, int windowHeight)
 	//{
 	//	writeConsole("\n%d", vec[i]);
 	//}
-
-	uint64_t val1 = 78;
-	uint64_t val2 = 45;
-
-	BigDecimal bigDecimal1(val1);
-	BigDecimal bigDecimal2(val2);
-
-	bigDecimal1.MultiplyBy2Power(1000);
-	bigDecimal2.MultiplyBy2Power(8000);
-
-	unsigned long startTime = GetTickCount();
-
-	BigDecimal* result = bigDecimal1.Multiply(&bigDecimal2);
-
-	unsigned long timeTaken = GetTickCount() - startTime;
-
-	string resultStr = result->ToString();
-
-	writeConsole("\nResult Len: %d, time taken :%lu\n",resultStr.length(), timeTaken);
-	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
-}
-
-void Looper::Draw(float deltaTime)
-{
-	//glClearColor(0.4, 0.4, 0.4, 1.0);
-	//glClear(GL_COLOR_BUFFER_BIT);
-
-	//SUIInput::Update((float)Input::MX, (float)Input::MY, Input::LEFT_BUTTON_DOWN, deltaTime);
-
-	//SUIDraw();
-}
-
-Looper::~Looper()
-{
-	//SUIQuit();
-}

@@ -3,6 +3,8 @@
 #include "string.h"
 #include "DefinesAndIncludes.h"
 
+int VecUInt::memCreateTime = 0;
+
 VecUInt::VecUInt()
 {
 	_capacity = 512;
@@ -30,7 +32,11 @@ void VecUInt::SetIncrementCapacity(unsigned int incrementCapacity)
 
 void VecUInt::ReCreateMem()
 {
-	int newCapacity = _capacity + _incrementInCapacity;
+	unsigned startTime = GetTickCount();
+
+	writeConsole("\n****** ReCreateMem called.. ******\n");
+
+	int newCapacity = 2*_capacity; // + _incrementInCapacity;
 
 	unsigned int* newArr = NULL;
 
@@ -44,8 +50,10 @@ void VecUInt::ReCreateMem()
 		
 		_arr = newArr;
 	}
-
+	
 	_capacity = newCapacity;
+
+	memCreateTime += GetTickCount() - startTime;
 }
 
 void VecUInt::push_back(unsigned int val)
