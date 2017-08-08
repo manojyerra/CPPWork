@@ -12,19 +12,18 @@
 
 void Method1()
 {
-	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)789742588);
-	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)454058755);
+	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)7789742588);
+	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)4454058755);
 
 	unsigned long startTime = GetTickCount();
-	
-	//bigDecimal2.MultiplyBy2Power(8000000);
 
-	for(int i=0; i<10; i++)
+	for(int i=0; i<1000; i++)
 	{
-		bigDecimal2 = bigDecimal2->Multiply( bigDecimal1 );
+		BigDecimal* result = bigDecimal2->Multiply( bigDecimal1 );
 
-		if(i % 10000 == 0)
-			writeConsole("\n%d = , timeTaken = %d",i, (GetTickCount() - startTime) );
+		delete bigDecimal2;
+
+		bigDecimal2 = result;
 	}
 
 	unsigned long timeTaken = GetTickCount() - startTime;

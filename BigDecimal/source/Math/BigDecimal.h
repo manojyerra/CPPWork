@@ -24,7 +24,8 @@ private:
 	void MultiplyBy2();
 	void DivideBy2();
 
-	bool _delVector;
+	static BigDecimal* Multiply_Method1(BigDecimal* a, BigDecimal* b);
+	static BigDecimal* Multiply_Method2(BigDecimal* a, BigDecimal* b);
 
 	static int addCount;
 	static int mulCount;
@@ -42,14 +43,16 @@ public:
 	BigDecimal(uint64_t val);
 	~BigDecimal();
 
-	void SetDeleteVector(bool del);
-
 	bool IsEvenNumber();
 	bool IsOddNumber();
 	bool IsZero();
 
 	BigDecimal* Multiply(BigDecimal* bigDecimal);
+
 	void MultiplyBy2Power(int power);
+
+	void MultiplyWithUInt(unsigned int val);
+	void MultiplyWithUInt(BigDecimal* a, unsigned int val, BigDecimal* result, int addFromIndex);
 
 	void DivideBy2Power(int power);
 
