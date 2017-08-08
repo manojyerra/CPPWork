@@ -8,38 +8,60 @@ int BigDecimal::divCount = 0;
 
 BigDecimal::BigDecimal()
 {
-	vec.push_back(0);
+	vec = new VecUInt();
+	vec->push_back(0);
+
+	_delVector = true;
 }
 
-BigDecimal::BigDecimal(BigDecimal* cloneFrom)
+BigDecimal::BigDecimal(VecUInt* vecUInt)
 {
-	vec = cloneFrom->vec;
+	vec = vecUInt;
+	_delVector = true;
+}
+
+BigDecimal::BigDecimal(unsigned int val, unsigned int vecCapacity)
+{
+	vec = new VecUInt(vecCapacity);
+	vec->push_back(val);
+
+	_delVector = true;
 }
 
 BigDecimal::BigDecimal(unsigned int val)
 {
-	vec.push_back(val);
+	vec = new VecUInt();
+	vec->push_back(val);
+
+	_delVector = true;
 }
 
 BigDecimal::BigDecimal(uint64_t val)
 {
+	vec = new VecUInt();
+
 	unsigned int intVal0 = (unsigned int)((val << 32 ) >> 32);
 	unsigned int intVal1 = (unsigned int)(val >> 32);
 
-	vec.push_back(intVal0);
+	vec->push_back(intVal0);
 
 	if(intVal1 > 0)
-		vec.push_back(intVal1);
+		vec->push_back(intVal1);
 
-	//ToString();
+	_delVector = true;
+}
+
+void BigDecimal::SetDeleteVector(bool del)
+{
+	_delVector = del;
 }
 
 bool BigDecimal::IsEvenNumber()
 {
 	bool isEven = true;
 
-	if(vec.size() > 0)
-		isEven = (vec[0] % 2 == 0);
+	if(vec->size() > 0)
+		isEven = (vec->at(0) % 2 == 0);
 
 	return isEven;
 }
@@ -48,8 +70,8 @@ bool BigDecimal::IsOddNumber()
 {
 	bool isOdd = false;
 
-	if(vec.size() > 0)
-		isOdd = (vec[0] % 2 == 1);
+	if(vec->size() > 0)
+		isOdd = (vec->at(0) % 2 == 1);
 
 	return isOdd;
 }
@@ -58,81 +80,86 @@ bool BigDecimal::IsZero()
 {
 	bool isZero = false;
 
-	if(vec.size() == 0)
+	if(vec->size() == 0)
 		isZero = true;
-	else if(vec.size() == 1)
-		isZero = (vec[0] == 0);
+	else if(vec->size() == 1)
+		isZero = (vec->at(0) == 0);
 
 	return isZero;
 }
 
 void BigDecimal::LeftShift_LessThan32(int leftShiftBits)
 {
-	unsigned int size = vec.size();
-
 	unsigned int rightShiftBits = sizeof(int)*8 - leftShiftBits;
 	unsigned int carry = 0;
 
+	unsigned int size = vec->size();
+	unsigned int* arr = vec->GetArray();
+
 	for(unsigned int i=0; i<size; i++)
 	{
-		unsigned int val = vec[i];
+		unsigned int val = arr[i];
 
-		vec[i] = (val << leftShiftBits) | carry;
+		arr[i] = (val << leftShiftBits) | carry;
 
 		carry = val >> rightShiftBits;
 	}
 
 	if(carry != 0)
-		vec.push_back(carry);
+		vec->push_back(carry);
 }
 
 void BigDecimal::LeftShift32Bits()
 {
-	unsigned int size = vec.size();
+	unsigned int size = vec->size();
 
-	vec.push_back(0);
+	vec->push_back(0);
+
+	unsigned int* arr = vec->GetArray();
 
 	for(int i=size-1; i>=0; i--)
 	{
-		vec[i+1] = vec[i];
+		arr[i+1] = arr[i];
 	}
 
-	vec[0] = 0;
+	arr[0] = 0;
 }
 
 void BigDecimal::LeftShift32BitsMultiple(int multiple)
 {
-	unsigned int size = vec.size();
+	unsigned int size = vec->size();
 
 	for(int i=0; i<multiple; i++)
-		vec.push_back(0);
+		vec->push_back(0);
+
+	unsigned int* arr = vec->GetArray();
 
 	for(int i=size-1; i>=0; i--)
-	{
-		vec[i+multiple] = vec[i];
-	}
+		arr[i+multiple] = arr[i];
 
 	for(int i=0; i<multiple; i++)
-		vec[i] = 0;
+		arr[i] = 0;
 }
 
 void BigDecimal::RightShift32Bits()
 {
-	unsigned int size = vec.size();
+	unsigned int size = vec->size();
 
-	vec.push_back(0);
+	vec->push_back(0);
+
+	unsigned int* arr = vec->GetArray();
 
 	for(int i=1; i<size; i++)
 	{
-		vec[i-1] = vec[i];
+		arr[i-1] = arr[i];
 	}
 
-	vec.pop_back();
+	vec->pop_back();
 }
 
 void BigDecimal::RightShift_LessThan32(int rightShiftBits)
 {
-	unsigned int size = vec.size();
+	unsigned int size = vec->size();
 
 	if(size <= 0)
 		return;
@@ -140,11 +167,13 @@ void BigDecimal::RightShift_LessThan32(int rightShiftBits)
 	unsigned int leftShiftBits = sizeof(int)*8 - rightShiftBits;
 	unsigned int carry = 0;
 
+	unsigned int* arr = vec->GetArray();
+
 	for(unsigned int i=size-1; ; i--)
 	{
-		unsigned int val = vec[i];
+		unsigned int val = arr[i];
 
-		vec[i] = (val >> rightShiftBits) | carry;
+		arr[i] = (val >> rightShiftBits) | carry;
 
 		carry = val << leftShiftBits;
 
@@ -152,8 +181,8 @@ void BigDecimal::RightShift_LessThan32(int rightShiftBits)
 			break;
 	}
 
-	if(vec[size-1] == 0)
-		vec.pop_back();
+	if(arr[size-1] == 0)
+		vec->pop_back();
 }
 
 
@@ -164,12 +193,7 @@ void BigDecimal::MultiplyBy2()
 
 void BigDecimal::DivideBy2()
 {
-	unsigned long startTime = GetTickCount();
-
 	RightShift_LessThan32(1);
-	//str = ToString();
-
-	divCount += GetTickCount() - startTime;
 }
 
 void BigDecimal::DivideBy2Power(int power)
@@ -195,10 +219,10 @@ char BigDecimal::GetBitValue(unsigned int index)
 	unsigned int arrIndex = index / 32;
 	unsigned int bitIndex = index % 32;
 
-	if(arrIndex >= vec.size())
+	if(arrIndex >= vec->size())
 		return -1;
 
-	unsigned int val = vec[arrIndex];
+	unsigned int val = vec->at(arrIndex);
 
 	unsigned short leftShift = 31 - bitIndex;
 
@@ -226,45 +250,64 @@ void BigDecimal::MultiplyBy2Power(int power)
 }
 
 
-BigDecimal* BigDecimal::Multiply(BigDecimal* b)
+BigDecimal* BigDecimal::Multiply(BigDecimal* bigDecimal)
 {
-	BigDecimal* result = new BigDecimal();
+	BigDecimal* a = Clone();
+	BigDecimal* b = bigDecimal;
+
+	if(a->vec->size() < b->vec->size())
+	{
+		BigDecimal* temp = a;
+		a = b;
+		b = temp;
+	}
 
 	int twoPower = 0;
-	int bitIndex = 0;
 
-	char bitVal = b->GetBitValue(bitIndex);
+	unsigned int bVecSize = b->vec->size();
+	unsigned int* bVecIter = b->vec->GetArray();
 
-	int loopCount = 0;
+	BigDecimal* result = new BigDecimal(0, bVecSize + a->vec->size() + 2);
 
-	while(bitVal >= 0)
+	for(int i=0; i<bVecSize; i++)
 	{
-		loopCount++;
+		unsigned int val = (*bVecIter);
 
-		//if(b->IsOddNumber())
-
-		if(bitVal == 1)
+		for(int bitIndex=0; bitIndex<32; bitIndex++)
 		{
-			if(twoPower > 0)
-			{
-				MultiplyBy2Power( twoPower );
+			unsigned int bitVal = ((val << (31 - bitIndex)) >> 31);
 
-				twoPower = 0;
+			if(bitVal == 1)
+			{
+				if(twoPower > 0)
+				{
+					a->MultiplyBy2Power( twoPower );
+					twoPower = 0;
+				}
+
+				result->Add(a);
 			}
 
-			result->Add(this);
+			twoPower++;
 		}
 
-		twoPower++;
-		bitIndex++;
-
-		bitVal = b->GetBitValue(bitIndex);
-
-		//b->DivideBy2();
+		bVecIter++;
 	}
-	
-	writeConsole("\nLoop count : %d",loopCount);
-	//delete b;
+
+	delete a;
+
+	//if(vec)
+	//{
+	//	delete vec;
+	//	vec = NULL;
+	//}
+
+	//vec = result->vec;
+
+	//result->SetDeleteVector(false);
+
+	//delete result;
+
 
 	return result;
 }
@@ -273,16 +316,19 @@ void BigDecimal::Add(BigDecimal* b)
 {
 	unsigned long startTime = GetTickCount();
 
-	if(vec.size() < b->vec.size())
+	if(vec->size() < b->vec->size())
 	{
-		while(vec.size() < b->vec.size())
-			vec.push_back(0);
+		while(vec->size() < b->vec->size())
+			vec->push_back(0);
 	}
 
-	vec.push_back(0);
+	vec->push_back(0);
 
-	unsigned int vecSize = vec.size();
-	unsigned int bVecSize = b->vec.size();
+	unsigned int* vecArr = vec->GetArray();
+	unsigned int vecSize = vec->size();
+
+	unsigned int* bVecArr = b->vec->GetArray();
+	unsigned int bVecSize = b->vec->size();
 
 	uint64_t sum = 0;
 	unsigned int carry = 0;
@@ -293,17 +339,17 @@ void BigDecimal::Add(BigDecimal* b)
 
 		if(i < bVecSize)
 		{
-			sum = vec[i];
-			sum += b->vec[i];
+			sum = vecArr[i];
+			sum += bVecArr[i];
 			sum += carry;
 		}
 		else
 		{
-			sum = vec[i];
+			sum = vecArr[i];
 			sum += carry;
 		}
 
-		vec[i] = (unsigned int) ((sum << 32) >> 32);
+		vecArr[i] = (unsigned int) ((sum << 32) >> 32);
 
 		carry = (unsigned int) (sum >> 32);
 
@@ -318,7 +364,7 @@ void BigDecimal::Add(BigDecimal* b)
 
 	for(int i=vecSize-1; i>=0; i--)
 	{
-		if(vec[i] == 0)
+		if(vecArr[i] == 0)
 			popCount++;
 		else
 			break;
@@ -326,12 +372,10 @@ void BigDecimal::Add(BigDecimal* b)
 
 	for(int i=0; i<popCount; i++)
 	{
-		vec.pop_back();
+		vec->pop_back();
 	}
 
-	//str = ToString();
-
-	addCount += GetTickCount() - startTime;
+	addCount += 1; //GetTickCount() - startTime;
 }
 
 
@@ -341,15 +385,15 @@ string BigDecimal::ToString()
 	writeConsole("\nmulcount : %d",mulCount);
 	writeConsole("\ndivcount : %d",divCount);
 	writeConsole("\nMem recreate time : %d", VecUInt::memCreateTime);
-	writeConsole("\nResult len : %d\n", vec.size());
+	writeConsole("\nResult len : %d\n", vec->size());
 
 	const BaseConverter& dec2hex = BaseConverter::DecimalToHexConverter();
 
 	string hexString;
 
-	for(int i=vec.size()-1; i>=0; i--)
+	for(int i=vec->size()-1; i>=0; i--)
 	{
-		string temp = dec2hex.FromDecimal(vec[i]);
+		string temp = dec2hex.FromDecimal(vec->at(i));
 
 		int len = temp.length();
 
@@ -358,9 +402,6 @@ string BigDecimal::ToString()
 
 		hexString.append( temp );
 	}
-
-	const BaseConverter& hex2dec = BaseConverter::HexToDecimalConverter();
-
 
 	/////////////////////////////////// Begin : Debug code  ///////
 
@@ -386,7 +427,69 @@ string BigDecimal::ToString()
 
 	/////////////////////////////////////// End : Debug code ////////
 
+	std::ofstream hexFile("outputHex.txt");
+	hexFile << hexString;
+	hexFile.close();
+
+	const BaseConverter& hex2dec = BaseConverter::HexToDecimalConverter();
 	str = hex2dec.Convert(hexString);
+
+	std::ofstream decimalFile("outputDecimal.txt");
+	decimalFile << str;
+	decimalFile.close();
 
 	return str;
 }
+
+BigDecimal* BigDecimal::Clone()
+{
+	VecUInt* newVec = vec->Clone();
+
+	return new BigDecimal(newVec);
+}
+
+BigDecimal::~BigDecimal()
+{
+	if(vec && _delVector)
+	{
+		delete vec;
+		vec = NULL;
+	}
+}
+
+
+//BigDecimal* BigDecimal::Multiply(BigDecimal* b)
+//{
+//	BigDecimal* result = new BigDecimal();
+//
+//	int twoPower = 0;
+//
+//	int bitIndex = 0;
+//	int loopCount = 0;
+//
+//	char bitVal = b->GetBitValue(bitIndex);
+//
+//	while(bitVal >= 0)
+//	{
+//		loopCount++;
+//
+//		if(bitVal == 1)
+//		{
+//			if(twoPower > 0)
+//			{
+//				MultiplyBy2Power( twoPower );
+//
+//				twoPower = 0;
+//			}
+//
+//			result->Add(this);
+//		}
+//
+//		twoPower++;
+//		bitIndex++;
+//
+//		bitVal = b->GetBitValue(bitIndex);
+//	}
+//
+//	return result;
+//}

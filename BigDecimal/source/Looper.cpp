@@ -9,29 +9,88 @@
 #include "Util/VecUInt.h"
 #include "Util/CVector.h"
 
-Looper::Looper(int windowWidth, int windowHeight)
+
+void Method1()
 {
-	uint64_t val1 = 78948752;
-	uint64_t val2 = 45458755;
-
-	BigDecimal bigDecimal1(val1);
-	BigDecimal bigDecimal2(val2);
-
-	bigDecimal1.MultiplyBy2Power(100000);
-	bigDecimal2.MultiplyBy2Power(800000);
+	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)789742588);
+	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)454058755);
 
 	unsigned long startTime = GetTickCount();
+	
+	//bigDecimal2.MultiplyBy2Power(8000000);
 
-	BigDecimal* result = bigDecimal1.Multiply(&bigDecimal2);
+	for(int i=0; i<10; i++)
+	{
+		bigDecimal2 = bigDecimal2->Multiply( bigDecimal1 );
+
+		if(i % 10000 == 0)
+			writeConsole("\n%d = , timeTaken = %d",i, (GetTickCount() - startTime) );
+	}
 
 	unsigned long timeTaken = GetTickCount() - startTime;
 
 	writeConsole("\nTime taken :%lu\n",timeTaken);
 
-	string resultStr = result->ToString();
+	string resultStr = bigDecimal2->ToString();
 
 	writeConsole("\nResult Len: %d\n\n",resultStr.length());
 	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
+}
+
+void Method2()
+{
+	BigDecimal bigDecimal1((uint64_t)4);
+	BigDecimal bigDecimal2((uint64_t)12);
+
+	unsigned long startTime = GetTickCount();
+
+	bigDecimal1.MultiplyBy2Power(2);
+
+	bigDecimal1.Multiply(&bigDecimal2);
+
+	unsigned long timeTaken = GetTickCount() - startTime;
+
+	writeConsole("\nTime taken :%lu\n",timeTaken);
+
+	string resultStr = bigDecimal1.ToString();
+
+	writeConsole("\nResult Len: %d\n\n",resultStr.length());
+	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
+}
+
+
+void Method3()
+{
+	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)4301234567);
+	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)3);
+
+	BigDecimal* result = bigDecimal1->Multiply( bigDecimal2 );
+
+	string resultTemp = result->ToString();
+
+	BigDecimal* bigDecimal3 = new BigDecimal((uint64_t)4301234567);
+	bigDecimal3->vec->GetArray()[0] = 0;
+
+	BigDecimal* bigDecimal4 = new BigDecimal((uint64_t)4301234567);
+	bigDecimal4->vec->GetArray()[1] = 0;
+
+	BigDecimal* part1 = bigDecimal2->Multiply( bigDecimal3 );
+	BigDecimal* part2 = bigDecimal2->Multiply( bigDecimal4 );
+
+	string part1Str = part1->ToString();
+	string part2Str = part2->ToString();
+
+	part1->Add( part2 );
+
+	string resultStr = part1->ToString();
+}
+
+
+Looper::Looper(int windowWidth, int windowHeight)
+{
+	Method1();
+	//Method2();
+	//Method3();
 }
 
 void Looper::Draw(float deltaTime)

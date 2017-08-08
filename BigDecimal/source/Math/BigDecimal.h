@@ -2,6 +2,10 @@
 #define BigDecimal_H
 
 #include "Util/VecUInt.h"
+
+#include <iostream>
+#include <fstream>
+
 #include "stdint.h"
 #include <vector>
 #include <string>
@@ -20,19 +24,25 @@ private:
 	void MultiplyBy2();
 	void DivideBy2();
 
+	bool _delVector;
+
 	static int addCount;
 	static int mulCount;
 	static int divCount;
 
 public:
-	VecUInt vec;
+	VecUInt* vec;
 
 	string str;
 
 	BigDecimal();
-	BigDecimal(BigDecimal* cloneFrom);
+	BigDecimal(VecUInt* vecUInt);
+	BigDecimal(unsigned int val, unsigned int vecCapacity);
 	BigDecimal(unsigned int val);
 	BigDecimal(uint64_t val);
+	~BigDecimal();
+
+	void SetDeleteVector(bool del);
 
 	bool IsEvenNumber();
 	bool IsOddNumber();
@@ -47,6 +57,7 @@ public:
 
 	char GetBitValue(unsigned int index);
 
+	BigDecimal* Clone();
 
 	string ToString();
 };

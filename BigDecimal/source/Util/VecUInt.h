@@ -5,11 +5,9 @@
 class VecUInt
 {
 private:
-	unsigned int _capacity;
-	unsigned int _incrementInCapacity;	
-
-	int _size;
 	unsigned int* _arr;
+	unsigned int _size;
+	unsigned int _capacity;
 	
 	void ReCreateMem();
 
@@ -20,16 +18,24 @@ public:
 	VecUInt(unsigned int capacity);
 	~VecUInt();
 
-	void SetIncrementCapacity(unsigned int incrementCapacity);
 	unsigned int size();
+	void setSize(int size);
+	unsigned int capacity();
 
 	void push_back(unsigned int val);
 	void pop_back();
 
-	void LeftShift(int numIndex);
-
 	unsigned int& const operator[](unsigned int i) const;
 	unsigned int& operator[](unsigned int i);
+
+	unsigned int at(unsigned int i);
+
+	unsigned int* GetArray();
+
+	VecUInt* Clone();
 };
 
 #endif
+
+
+//void LeftShift(int numIndex);
