@@ -1,19 +1,22 @@
 #ifndef Looper_H
 #define Looper_H
 
+#include "BigInteger.h"
 
-#include "SUI/SUI.h"
-#include "SUI/SUIInput.h"
-#include "SUI/SUIActionListener.h"
+class NumarAndDenom
+{
+public:
+    BigInteger* numar;
+    BigInteger* denom;
+};
 
-#include "UIFrames/MainFrame.h"
+
 
 class Looper
 {
 private:
 	float _windowW;
 	float _windowH;
-	MainFrame* _mainFrame;
 
 public:
 	Looper(int windowWidth, int windowHeight);

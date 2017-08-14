@@ -4,8 +4,8 @@
 
 #include "DefinesAndIncludes.h"
 #include "Looper.h"
-#include "Input.h"
-#include "SUI/SUIInput.h"
+//#include "Input.h"
+//#include "SUI/SUIInput.h"
 
 HWND hWnd = NULL;
 HDC hDC = NULL;
@@ -65,29 +65,29 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	}
 	else if(message == WM_MOVE)
 	{
-		Input::WIN_MOVE_X = LOWORD(lParam);
-		Input::WIN_MOVE_Y = HIWORD(lParam);
+		//Input::WIN_MOVE_X = LOWORD(lParam);
+		//Input::WIN_MOVE_Y = HIWORD(lParam);
 	}
 	else if(message == WM_MOUSEWHEEL)
 	{
 		if(GET_WHEEL_DELTA_WPARAM(wParam) > 0)
 		{
-			Input::SetScrollState(Input::SCROLL_UP);
-			SUIInput::SetScrollState(SUIInput::SCROLL_UP);
+			//Input::SetScrollState(Input::SCROLL_UP);
+			//SUIInput::SetScrollState(SUIInput::SCROLL_UP);
 		}
 		else if(GET_WHEEL_DELTA_WPARAM(wParam) < 0)
 		{
-			Input::SetScrollState(Input::SCROLL_DOWN);
-			SUIInput::SetScrollState(SUIInput::SCROLL_DOWN);
+			//Input::SetScrollState(Input::SCROLL_DOWN);
+			//SUIInput::SetScrollState(SUIInput::SCROLL_DOWN);
 		}
 	}
-	else if(message == WM_LBUTTONDOWN)	{	Input::LEFT_BUTTON_DOWN = true;		}
-	else if(message == WM_LBUTTONUP)	{	Input::LEFT_BUTTON_DOWN = false;		}
-	else if(message == WM_RBUTTONDOWN)	{	Input::RIGHT_BUTTON_DOWN = true;		}
-	else if(message == WM_RBUTTONUP)	{	Input::RIGHT_BUTTON_DOWN = false;	}
-	else if(message == WM_MBUTTONUP)	{	Input::MIDDLE_BUTTON_DOWN = false;	}
-	else if(message == WM_MBUTTONDOWN)	{	Input::MIDDLE_BUTTON_DOWN = true;	}
-	else if(message == WM_MOUSEMOVE)	{	Input::MOUSE_MOVE = true;			}
+	//else if(message == WM_LBUTTONDOWN)	{	Input::LEFT_BUTTON_DOWN = true;		}
+	//else if(message == WM_LBUTTONUP)	{	Input::LEFT_BUTTON_DOWN = false;		}
+	//else if(message == WM_RBUTTONDOWN)	{	Input::RIGHT_BUTTON_DOWN = true;		}
+	//else if(message == WM_RBUTTONUP)	{	Input::RIGHT_BUTTON_DOWN = false;	}
+	//else if(message == WM_MBUTTONUP)	{	Input::MIDDLE_BUTTON_DOWN = false;	}
+	//else if(message == WM_MBUTTONDOWN)	{	Input::MIDDLE_BUTTON_DOWN = true;	}
+	//else if(message == WM_MOUSEMOVE)	{	Input::MOUSE_MOVE = true;			}
 	else if(message == WM_SIZING)
 	{
 		RECT &rc = *(LPRECT) lParam;
@@ -261,7 +261,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		float deltaTime = (tickCount-prevTickCount) == 0 ? 1.0f/1000.0f : (float)(tickCount-prevTickCount) / 1000.0f;
 		prevTickCount = tickCount;
 
-		Input::Update(deltaTime);
+		//Input::Update(deltaTime);
 
 		looper->Draw(deltaTime);
 

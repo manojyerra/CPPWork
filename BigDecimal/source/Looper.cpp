@@ -1,96 +1,265 @@
 #include "Looper.h"
-#include "Input.h"
 #include "math.h"
 #include "DefinesAndIncludes.h"
-#include "ImageBuffer.h"
-#include "Math/BaseConverter.h"
-#include "Math/BigDecimal.h"
 #include "stdint.h"
-#include "Util/VecUInt.h"
-#include "Util/CVector.h"
+#include "VecUInt.h"
+#include "BigInteger.h"
 
-
-void Method1()
-{
-	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)7789742588);
-	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)4454058755);
-
-	unsigned long startTime = GetTickCount();
-
-	for(int i=0; i<1000; i++)
-	{
-		BigDecimal* result = bigDecimal2->Multiply( bigDecimal1 );
-
-		delete bigDecimal2;
-
-		bigDecimal2 = result;
-	}
-
-	unsigned long timeTaken = GetTickCount() - startTime;
-
-	writeConsole("\nTime taken :%lu\n",timeTaken);
-
-	string resultStr = bigDecimal2->ToString();
-
-	writeConsole("\nResult Len: %d\n\n",resultStr.length());
-	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
-}
 
 void Method2()
 {
-	BigDecimal bigDecimal1((uint64_t)4);
-	BigDecimal bigDecimal2((uint64_t)12);
+	uint64_t startTime = GetTickCount();
+    
+    BigInteger* bigInteger1 = new BigInteger((uint64_t)7797279247);
+    
+    for(int i=0; i<11; i++)
+        bigInteger1->Mul(bigInteger1);
 
-	unsigned long startTime = GetTickCount();
+    BigInteger* bigInteger2 = new BigInteger((uint64_t)123987456789);
 
-	bigDecimal1.MultiplyBy2Power(2);
+    for(int i=0; i<11; i++)
+        bigInteger2->Mul(bigInteger2);
+    
+	writeConsole("\nstarted...\n\n");
+    
+    BigInteger* result = BigInteger::Mul(bigInteger1, bigInteger2);
+    
+    uint64_t endTime = GetTickCount();
+    
+    string resultStr = result->GetHexString();
+    
+    writeConsole("\nTime taken Norm : %d, len : %d\n", (int)(endTime - startTime), (int)resultStr.length());
+    
+	writeConsole("\n result :  %s\n",resultStr.c_str());
+}
 
-	bigDecimal1.Multiply(&bigDecimal2);
+void Method1()
+{
+    BigInteger* b1 = new BigInteger((uint64_t)779721479247);
+    
+    b1->Mul( new BigInteger((uint64_t)10000000000) );
+    b1->Add( new BigInteger((uint64_t) 8732016463) );
 
-	unsigned long timeTaken = GetTickCount() - startTime;
+    b1->Mul( new BigInteger((uint64_t)10000000) );
+    b1->Add( new BigInteger((uint64_t) 4419200) );
 
-	writeConsole("\nTime taken :%lu\n",timeTaken);
-
-	string resultStr = bigDecimal1.ToString();
-
-	writeConsole("\nResult Len: %d\n\n",resultStr.length());
-	writeConsole("\n\nResult : %s\n\n",resultStr.c_str());
+    
+    BigInteger* b2 = new BigInteger((uint64_t)15898147326221);
+    
+    b2->Mul( new BigInteger((uint64_t)10000000000) );
+    b2->Add( new BigInteger((uint64_t) 5788341546) );
+    
+    b2->Mul( new BigInteger((uint64_t)10000000) );
+    b2->Add( new BigInteger((uint64_t) 1888000) );
+    
+    printf("\n1-- :    %s\n",b1->GetHexString().c_str());
+    printf("\n2-- :  %s\n",b2->GetHexString().c_str());
+    
+    BigInteger* sum = BigInteger::Mul(b1, b2);
+    
+    printf("\n3-- :  %s\n",sum->GetHexString().c_str());
 }
 
 
-void Method3()
+NumarAndDenom Element(unsigned int k)
 {
-	BigDecimal* bigDecimal1 = new BigDecimal((uint64_t)4301234567);
-	BigDecimal* bigDecimal2 = new BigDecimal((uint64_t)3);
+    NumarAndDenom numerAndDenom;
+    
+    numerAndDenom.numar = new BigInteger((unsigned int) 1);
+    numerAndDenom.denom = new BigInteger( (uint64_t)(8 * k + 1) );
+    
+    return numerAndDenom;
+    
 
-	BigDecimal* result = bigDecimal1->Multiply( bigDecimal2 );
+//    BigInteger a( (uint64_t)(8 * k + 1) );
+//    BigInteger b( (uint64_t)(8 * k + 4) );
+//    BigInteger c( (uint64_t)(8 * k + 5) );
+//    BigInteger d( (uint64_t)(8 * k + 6) );
+//    
+//    BigInteger* ab = BigInteger::Mul(&a, &b);
+//    BigInteger* cd = BigInteger::Mul(&c, &d);
+//    
+//    BigInteger* const1 = BigInteger::Mul(&b, cd);
+//    const1->MulBy2Power(2);
+//    
+//    BigInteger* const2 = BigInteger::Mul(&a, cd);
+//    const2->MulBy2Power(1);
+//    
+//    BigInteger* const3 = BigInteger::Mul(ab, &d);
+//    BigInteger* const4 = BigInteger::Mul(ab, &c);
+//    
+//    const2->Add(const3);
+//    const2->Add(const4);
+//    
+//    NumarAndDenom numerAndDenom;
+//    
+//    numerAndDenom.numar = BigInteger::Subtract(const1, const2);
+//    numerAndDenom.denom = BigInteger::Mul(ab, cd);
+//    
+//    //printf("\nN:%s",numerAndDenom.numar->ToString().c_str());
+//    //printf("\nD:%s",numerAndDenom.denom->ToString().c_str());
+//    
+//    delete ab;
+//    delete cd;
+//    delete const1;
+//    delete const2;
+//    delete const3;
+//    delete const4;
+//    
+//    return numerAndDenom;
+}
 
-	string resultTemp = result->ToString();
 
-	BigDecimal* bigDecimal3 = new BigDecimal((uint64_t)4301234567);
-	bigDecimal3->vec->GetArray()[0] = 0;
+NumarAndDenom Spigot_Level_1(int startVal, int endVal)
+{
+    printf("\nL1 : %d - %d",startVal, endVal);
+    
+    BigInteger* totalNumar = new BigInteger((unsigned int)0);
+    BigInteger* totalDenom = new BigInteger((unsigned int)1);
+    
+    //BigInteger sixTeen = new BigInteger(16);
+    
+    for(int k=endVal-1 ; k>=startVal; k--)
+    {
+        NumarAndDenom elementND = Element( k );
+        
+        BigInteger* ab = BigInteger::Mul(totalNumar, elementND.denom);
+        BigInteger* cd = BigInteger::Mul(totalDenom, elementND.numar);
+        
+        BigInteger* newNumar = BigInteger::Add(ab, cd);
+        
+//        printf("\nab %s",ab->ToString().c_str());
+//        printf("\ncd %s",cd->ToString().c_str());
+//        printf("\nNewNumar : %s", newNumar->ToString().c_str());
+        
+        delete ab;
+        delete cd;
+        delete totalNumar;
+        
+        totalNumar = newNumar;
+        
+        totalDenom->Mul( elementND.denom );
+        
+        if(k != startVal)
+        {
+            totalDenom->MulBy2Power(4);
+        }
+        
+        delete elementND.numar;
+        delete elementND.denom;
+    }
+    
+    NumarAndDenom numerAndDenom;
+    
+    numerAndDenom.numar = totalNumar;
+    numerAndDenom.denom = totalDenom;
+    
+//    printf("\nNumar : %s", totalNumar->ToString().c_str());
+//    printf("\nDenom : %s", totalDenom->ToString().c_str());
+    
+    return numerAndDenom;
+}
 
-	BigDecimal* bigDecimal4 = new BigDecimal((uint64_t)4301234567);
-	bigDecimal4->vec->GetArray()[1] = 0;
 
-	BigDecimal* part1 = bigDecimal2->Multiply( bigDecimal3 );
-	BigDecimal* part2 = bigDecimal2->Multiply( bigDecimal4 );
+NumarAndDenom Spigot_Level_2(int startVal, int increment, int numTimes)
+{
+    BigInteger* totalNumar = new BigInteger((unsigned int)0);
+    BigInteger* totalDenom = new BigInteger((unsigned int)1);
+    
+    int endVal = startVal + increment * numTimes;
+    
+    for(int k=endVal ; k>startVal; k -= increment)
+    {
+        //printf("\nk2 = %d", (endVal-k));
+        
+        NumarAndDenom nd = Spigot_Level_1(k-increment, k);
+        
+        BigInteger* ab = BigInteger::Mul(totalNumar, nd.denom);
+        BigInteger* cd = BigInteger::Mul(totalDenom, nd.numar);
+        
+        BigInteger* newNumar = BigInteger::Add(ab, cd);
+        
+        delete ab;
+        delete cd;
+        delete totalNumar;
+        
+        totalNumar = newNumar;
+        
+        totalDenom->Mul( nd.denom );
+        
+        if(k-increment != startVal)
+            totalDenom->MulBy2Power(increment * 4);
+    }
+    
+    NumarAndDenom numerAndDenom;
+    
+    numerAndDenom.numar = totalNumar;
+    numerAndDenom.denom = totalDenom;
+    
+    return numerAndDenom;
+}
 
-	string part1Str = part1->ToString();
-	string part2Str = part2->ToString();
 
-	part1->Add( part2 );
-
-	string resultStr = part1->ToString();
+NumarAndDenom Spigot_Level_3(int startVal, int increment, int numTimes)
+{
+    BigInteger* totalNumar = new BigInteger((unsigned int)0);
+    BigInteger* totalDenom = new BigInteger((unsigned int)1);
+    
+    int endVal = startVal + increment * numTimes;
+    
+    for(int k=endVal ; k>startVal; k -= increment)
+    {
+        printf("\nk-3 = %d", (endVal-k));
+        
+        NumarAndDenom nd = Spigot_Level_2(k-increment, increment/10, 10);
+        
+        BigInteger* ab = BigInteger::Mul(totalNumar, nd.denom);
+        BigInteger* cd = BigInteger::Mul(totalDenom, nd.numar);
+        
+        BigInteger* newNumar = BigInteger::Add(ab, cd);
+        
+        delete ab;
+        delete cd;
+        delete totalNumar;
+        
+        totalNumar = newNumar;
+        
+        totalDenom->Mul( nd.denom );
+        
+        if(k-increment != startVal)
+        totalDenom->MulBy2Power(increment * 4);
+    }
+    
+    NumarAndDenom numerAndDenom;
+    
+    numerAndDenom.numar = totalNumar;
+    numerAndDenom.denom = totalDenom;
+    
+    return numerAndDenom;
 }
 
 
 Looper::Looper(int windowWidth, int windowHeight)
 {
-	Method1();
-	//Method2();
-	//Method3();
+    //Method2();
+    
+    //Method1();
+    
+    //Element(234567);
+    
+    uint64_t startTime = GetTickCount();
+    
+//    Spigot_Level_3(0, 50000/10, 10);
+    
+    Spigot_Level_1(0, 1000);
+    
+    uint64_t endTime = GetTickCount();
+    
+    int timeTaken =(int)( endTime - startTime );
+    
+    writeConsole("\n\nTime taken : %d\n", timeTaken);    
 }
+
 
 void Looper::Draw(float deltaTime)
 {
@@ -100,7 +269,7 @@ Looper::~Looper()
 {
 }
 
-//
+
 //void shift_left(unsigned char *ar, int size, int leftShift)
 //{
 //	if(size <= 0)

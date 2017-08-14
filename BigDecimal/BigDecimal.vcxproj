@@ -10,6 +10,21 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="source\BaseConverter.cpp" />
+    <ClCompile Include="source\BigInteger.cpp" />
+    <ClCompile Include="source\DefinesAndIncludes.cpp" />
+    <ClCompile Include="source\Looper.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\VecUInt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\BaseConverter.h" />
+    <ClInclude Include="source\BigInteger.h" />
+    <ClInclude Include="source\DefinesAndIncludes.h" />
+    <ClInclude Include="source\Looper.h" />
+    <ClInclude Include="source\VecUInt.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A434B225-8064-4C2C-9A44-90DF1218D8A6}</ProjectGuid>
   </PropertyGroup>
@@ -118,6 +133,7 @@
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalIncludeDirectories>source</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -138,143 +154,6 @@
       <OutputFile>.\Release/BigDecimal.bsc</OutputFile>
     </Bscmake>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="source\CFileReader.cpp" />
-    <ClCompile Include="source\DefinesAndIncludes.cpp" />
-    <ClCompile Include="source\ImageBuffer.cpp" />
-    <ClCompile Include="source\Input.cpp" />
-    <ClCompile Include="source\Looper.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Math\BaseConverter.cpp" />
-    <ClCompile Include="source\Math\BigDecimal.cpp" />
-    <ClCompile Include="source\Math\Line2D.cpp" />
-    <ClCompile Include="source\Math\Triangle2D.cpp" />
-    <ClCompile Include="source\PNG\PNGReadWrite.cpp" />
-    <ClCompile Include="source\PNG\libpng\png.c" />
-    <ClCompile Include="source\PNG\libpng\pngerror.c" />
-    <ClCompile Include="source\PNG\libpng\pngget.c" />
-    <ClCompile Include="source\PNG\libpng\pngmem.c" />
-    <ClCompile Include="source\PNG\libpng\pngpread.c" />
-    <ClCompile Include="source\PNG\libpng\pngread.c" />
-    <ClCompile Include="source\PNG\libpng\pngrio.c" />
-    <ClCompile Include="source\PNG\libpng\pngrtran.c" />
-    <ClCompile Include="source\PNG\libpng\pngrutil.c" />
-    <ClCompile Include="source\PNG\libpng\pngset.c" />
-    <ClCompile Include="source\PNG\libpng\pngtest.c" />
-    <ClCompile Include="source\PNG\libpng\pngtrans.c" />
-    <ClCompile Include="source\PNG\libpng\pngwio.c" />
-    <ClCompile Include="source\PNG\libpng\pngwrite.c" />
-    <ClCompile Include="source\PNG\libpng\pngwtran.c" />
-    <ClCompile Include="source\PNG\libpng\pngwutil.c" />
-    <ClCompile Include="source\PNG\zlib\adler32.c" />
-    <ClCompile Include="source\PNG\zlib\compress.c" />
-    <ClCompile Include="source\PNG\zlib\crc32.c" />
-    <ClCompile Include="source\PNG\zlib\deflate.c" />
-    <ClCompile Include="source\PNG\zlib\gzclose.c" />
-    <ClCompile Include="source\PNG\zlib\gzlib.c" />
-    <ClCompile Include="source\PNG\zlib\gzread.c" />
-    <ClCompile Include="source\PNG\zlib\gzwrite.c" />
-    <ClCompile Include="source\PNG\zlib\infback.c" />
-    <ClCompile Include="source\PNG\zlib\inffast.c" />
-    <ClCompile Include="source\PNG\zlib\inflate.c" />
-    <ClCompile Include="source\PNG\zlib\inftrees.c" />
-    <ClCompile Include="source\PNG\zlib\minigzip.c" />
-    <ClCompile Include="source\PNG\zlib\trees.c" />
-    <ClCompile Include="source\PNG\zlib\uncompr.c" />
-    <ClCompile Include="source\PNG\zlib\zutil.c" />
-    <ClCompile Include="source\Math\GLMat.cpp" />
-    <ClCompile Include="source\Math\TransformVertexBuf.cpp" />
-    <ClCompile Include="source\Math\Vector3.cpp" />
-    <ClCompile Include="source\SUI\SUIKeyCombi.cpp" />
-    <ClCompile Include="source\SUI\SUITextField.cpp" />
-    <ClCompile Include="source\UIFrames\MainFrame.cpp" />
-    <ClCompile Include="source\Util\CVector.cpp" />
-    <ClCompile Include="source\Util\GL2DState.cpp" />
-    <ClCompile Include="source\Util\GLUtil.cpp" />
-    <ClCompile Include="source\Util\RandomColor.cpp" />
-    <ClCompile Include="source\SUI\SUI.cpp" />
-    <ClCompile Include="source\SUI\SUIBatch.cpp" />
-    <ClCompile Include="source\SUI\SUIBox.cpp" />
-    <ClCompile Include="source\SUI\SUIButton.cpp" />
-    <ClCompile Include="source\SUI\SUICheckBox.cpp" />
-    <ClCompile Include="source\SUI\SUIChoice.cpp" />
-    <ClCompile Include="source\SUI\SUIComponent.cpp" />
-    <ClCompile Include="source\SUI\SUIFont.cpp" />
-    <ClCompile Include="source\SUI\SUIFrame.cpp" />
-    <ClCompile Include="source\SUI\SUIInput.cpp" />
-    <ClCompile Include="source\SUI\SUILabel.cpp" />
-    <ClCompile Include="source\SUI\SUIList.cpp" />
-    <ClCompile Include="source\SUI\SUIManager.cpp" />
-    <ClCompile Include="source\SUI\SUIRadioButton.cpp" />
-    <ClCompile Include="source\SUI\SUIRect.cpp" />
-    <ClCompile Include="source\SUI\SUIScroller.cpp" />
-    <ClCompile Include="source\SUI\SUISlider.cpp" />
-    <ClCompile Include="source\Util\StringUtils.cpp" />
-    <ClCompile Include="source\Util\UtilFuncs.cpp" />
-    <ClCompile Include="source\Util\VecUInt.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="source\CFileReader.h" />
-    <ClInclude Include="source\DefinesAndIncludes.h" />
-    <ClInclude Include="source\ImageBuffer.h" />
-    <ClInclude Include="source\Input.h" />
-    <ClInclude Include="source\Looper.h" />
-    <ClInclude Include="source\Math\BaseConverter.h" />
-    <ClInclude Include="source\Math\BigDecimal.h" />
-    <ClInclude Include="source\Math\Line2D.h" />
-    <ClInclude Include="source\Math\Triangle2D.h" />
-    <ClInclude Include="source\PNG\PNGReadWrite.h" />
-    <ClInclude Include="source\PNG\libpng\png.h" />
-    <ClInclude Include="source\PNG\libpng\pngconf.h" />
-    <ClInclude Include="source\PNG\libpng\pngpriv.h" />
-    <ClInclude Include="source\PNG\zlib\crc32.h" />
-    <ClInclude Include="source\PNG\zlib\deflate.h" />
-    <ClInclude Include="source\PNG\zlib\gzguts.h" />
-    <ClInclude Include="source\PNG\zlib\inffast.h" />
-    <ClInclude Include="source\PNG\zlib\inffixed.h" />
-    <ClInclude Include="source\PNG\zlib\inflate.h" />
-    <ClInclude Include="source\PNG\zlib\inftrees.h" />
-    <ClInclude Include="source\PNG\zlib\trees.h" />
-    <ClInclude Include="source\PNG\zlib\zconf.h" />
-    <ClInclude Include="source\PNG\zlib\zlib.h" />
-    <ClInclude Include="source\PNG\zlib\zutil.h" />
-    <ClInclude Include="source\Math\GLMat.h" />
-    <ClInclude Include="source\Math\TransformVertexBuf.h" />
-    <ClInclude Include="source\Math\Vector3.h" />
-    <ClInclude Include="source\SUI\SUIKeyCombi.h" />
-    <ClInclude Include="source\SUI\SUITextField.h" />
-    <ClInclude Include="source\UIFrames\MainFrame.h" />
-    <ClInclude Include="source\Util\CVector.h" />
-    <ClInclude Include="source\Util\GL2DState.h" />
-    <ClInclude Include="source\Util\GLUtil.h" />
-    <ClInclude Include="source\Util\RandomColor.h" />
-    <ClInclude Include="source\SUI\SUI.h" />
-    <ClInclude Include="source\SUI\SUIActionEvent.h" />
-    <ClInclude Include="source\SUI\SUIActionListener.h" />
-    <ClInclude Include="source\SUI\SUIBatch.h" />
-    <ClInclude Include="source\SUI\SUIBox.h" />
-    <ClInclude Include="source\SUI\SUIButton.h" />
-    <ClInclude Include="source\SUI\SUICheckBox.h" />
-    <ClInclude Include="source\SUI\SUIChoice.h" />
-    <ClInclude Include="source\SUI\SUIComponent.h" />
-    <ClInclude Include="source\SUI\SUIEvents.h" />
-    <ClInclude Include="source\SUI\SUIFont.h" />
-    <ClInclude Include="source\SUI\SUIFrame.h" />
-    <ClInclude Include="source\SUI\SUIIncludes.h" />
-    <ClInclude Include="source\SUI\SUIInput.h" />
-    <ClInclude Include="source\SUI\SUILabel.h" />
-    <ClInclude Include="source\SUI\SUIList.h" />
-    <ClInclude Include="source\SUI\SUIManager.h" />
-    <ClInclude Include="source\SUI\SUIMouseEvent.h" />
-    <ClInclude Include="source\SUI\SUIMouseListener.h" />
-    <ClInclude Include="source\SUI\SUIRadioButton.h" />
-    <ClInclude Include="source\SUI\SUIRect.h" />
-    <ClInclude Include="source\SUI\SUIScroller.h" />
-    <ClInclude Include="source\SUI\SUISlider.h" />
-    <ClInclude Include="source\Util\StringUtils.h" />
-    <ClInclude Include="source\Util\UtilFuncs.h" />
-    <ClInclude Include="source\Util\VecUInt.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

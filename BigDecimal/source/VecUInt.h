@@ -25,17 +25,19 @@ public:
 	void push_back(unsigned int val);
 	void pop_back();
 
-	unsigned int& const operator[](unsigned int i) const;
-	unsigned int& operator[](unsigned int i);
+	//unsigned int& const operator[](unsigned int i) const;
+	//unsigned int& operator[](unsigned int i);
 
 	unsigned int at(unsigned int i);
 
 	unsigned int* GetArray();
 
 	VecUInt* Clone();
+    VecUInt* CloneAndLeftShiftBytes(int numBytes);
+    
+    //void LeftShiftBytes(int numBytes);
 };
 
 #endif
 
 
-//void LeftShift(int numIndex);
