@@ -15,13 +15,14 @@ using namespace std;
 class BigInteger
 {
 private:
-	void LeftShift_LessThan32(int shiftBits);
-	void LeftShift32Bits();
-	void LeftShift32BitMultiple(int multiple);
+	void LeftShift_LessThan32(unsigned int numBits);
+	void LeftShift32BitMultiple(unsigned int multiple);
+	void LeftShift(unsigned int numBits);
 
-	void RightShift_LessThan32(int shiftBits);
-	void RightShift32Bits();
-    
+	void RightShift_LessThan32(unsigned int numBits);
+	void RightShift32BitMultiple(unsigned int multiple);
+	void RightShift(unsigned int numBits);
+
 	static int addCount;
 	static int mulCount;
 
@@ -43,25 +44,22 @@ public:
 	bool IsEvenNumber();
 	bool IsOddNumber();
 	bool IsZero();
-    char GetBitValue(unsigned int index);
     
-    void Add(BigInteger* b);
-    static BigInteger* Add(BigInteger* a, BigInteger* b);
+    static BigInteger* Add		(BigInteger* a, BigInteger* b);
+    static BigInteger* Subtract	(BigInteger* a, BigInteger* b);
+    static BigInteger* Mul		(BigInteger* a, BigInteger* b);
+    static BigInteger* Mul		(BigInteger* a, unsigned int uIntVal);
 
-    void Subtract(BigInteger* b);
-    static BigInteger* Subtract(BigInteger* a, BigInteger* b);
-    
-    static BigInteger* Mul(BigInteger* a, BigInteger* b);
-    static BigInteger* Mul(BigInteger* a, unsigned int uIntVal);
-    
-    void Mul(BigInteger* bigInteger);
-    void Mul(unsigned int uIntVal);
+    void Add		(BigInteger* b);
+    void Subtract	(BigInteger* b);
+    void Mul		(BigInteger* bigInteger);
+    void Mul		(unsigned int uIntVal);
+
+	void MulBy2Power(int power);
+	void DivideBy2Power	 (int power);
     
     void MultiplyBy2();
-    void MulBy2Power(int power);
-    
     void DivideBy2();
-    void DivideBy2Power(int power);
 };
 
 #endif
@@ -71,3 +69,12 @@ public:
 //static void Add_Exper(BigInteger* aBigInteger, BigInteger* rBigInteger, int startIndex);
 //static void AddBytes(unsigned char* a, unsigned char* r, unsigned int size);
 //static BigInteger* Mul_Exper(BigInteger* a, BigInteger* b);
+
+//char GetBitValue(unsigned int index);
+//void RightShift32Bits();
+
+//void LeftShift32Bits();
+//void LeftShift32BitMultiple(int multiple);
+
+//void DivideBy2Power(int power);
+//void MulBy2Power(int power);

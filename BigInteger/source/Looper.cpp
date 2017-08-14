@@ -30,7 +30,7 @@ void Method2()
     
     writeConsole("\nTime taken Norm : %d, len : %d\n", (int)(endTime - startTime), (int)resultStr.length());
     
-	writeConsole("\n result :  %s\n",resultStr.c_str());
+	//writeConsole("\n result :  %s\n",resultStr.c_str());
 }
 
 void Method1()
@@ -112,7 +112,7 @@ NumarAndDenom Element(unsigned int k)
 
 NumarAndDenom Spigot_Level_1(int startVal, int endVal)
 {
-    printf("\nL1 : %d - %d",startVal, endVal);
+    writeConsole("\nL1 : %d - %d",startVal, endVal);
     
     BigInteger* totalNumar = new BigInteger((unsigned int)0);
     BigInteger* totalDenom = new BigInteger((unsigned int)1);
@@ -209,7 +209,7 @@ NumarAndDenom Spigot_Level_3(int startVal, int increment, int numTimes)
     
     for(int k=endVal ; k>startVal; k -= increment)
     {
-        printf("\nk-3 = %d", (endVal-k));
+        writeConsole("\nk-3 = %d", (endVal-k));
         
         NumarAndDenom nd = Spigot_Level_2(k-increment, increment/10, 10);
         
@@ -227,7 +227,7 @@ NumarAndDenom Spigot_Level_3(int startVal, int increment, int numTimes)
         totalDenom->Mul( nd.denom );
         
         if(k-increment != startVal)
-        totalDenom->MulBy2Power(increment * 4);
+			totalDenom->MulBy2Power(increment * 4);
     }
     
     NumarAndDenom numerAndDenom;
@@ -241,22 +241,23 @@ NumarAndDenom Spigot_Level_3(int startVal, int increment, int numTimes)
 
 Looper::Looper(int windowWidth, int windowHeight)
 {
-    //Method2();
-    
+    Method2();
     //Method1();
-    
     //Element(234567);
     
     uint64_t startTime = GetTickCount();
     
-//    Spigot_Level_3(0, 50000/10, 10);
+	//Spigot_Level_3(0, 50000/10, 10);
     
-    Spigot_Level_1(0, 1000);
+    //Spigot_Level_1(0, 1000);
     
     uint64_t endTime = GetTickCount();
     
     int timeTaken =(int)( endTime - startTime );
     
+	BigInteger* big = new BigInteger((unsigned int)0);
+	big->GetHexString();
+
     writeConsole("\n\nTime taken : %d\n", timeTaken);    
 }
 

@@ -98,23 +98,7 @@ bool BigInteger::IsZero()
 }
 
 
-char BigInteger::GetBitValue(unsigned int index)
-{
-    unsigned int arrIndex = index / 32;
-    unsigned int bitIndex = index % 32;
-    
-    if(arrIndex >= vec->size())
-    return -1;
-    
-    unsigned int val = vec->at(arrIndex);
-    
-    unsigned short leftShift = 31 - bitIndex;
-    
-    return ((val << leftShift) >> 31);
-}
-
-
-void BigInteger::LeftShift_LessThan32(int leftShiftBits)
+void BigInteger::LeftShift_LessThan32(unsigned int leftShiftBits)
 {
 	unsigned int rightShiftBits = sizeof(int)*8 - leftShiftBits;
 	unsigned int carry = 0;
@@ -136,24 +120,7 @@ void BigInteger::LeftShift_LessThan32(int leftShiftBits)
 }
 
 
-void BigInteger::LeftShift32Bits()
-{
-	unsigned int size = vec->size();
-
-	vec->push_back(0);
-
-	unsigned int* arr = vec->GetArray();
-
-	for(int i=size-1; i>=0; i--)
-	{
-		arr[i+1] = arr[i];
-	}
-
-	arr[0] = 0;
-}
-
-
-void BigInteger::LeftShift32BitMultiple(int multiple)
+void BigInteger::LeftShift32BitMultiple(unsigned int multiple)
 {
 	unsigned int size = vec->size();
 
@@ -170,24 +137,25 @@ void BigInteger::LeftShift32BitMultiple(int multiple)
 }
 
 
-void BigInteger::RightShift32Bits()
+void BigInteger::LeftShift(unsigned int numBits)
 {
-	unsigned int size = vec->size();
+	if(numBits == 0)
+		return;
 
-	vec->push_back(0);
+	int sizeOfUInt = sizeof(unsigned int) * 8;
 
-	unsigned int* arr = vec->GetArray();
+	int num32BitsShift = numBits / sizeOfUInt;
+	int remainderBits = numBits % sizeOfUInt;
 
-	for(int i=1; i<size; i++)
-	{
-		arr[i-1] = arr[i];
-	}
+	if(num32BitsShift)
+		LeftShift32BitMultiple( num32BitsShift );
 
-	vec->pop_back();
+	if(remainderBits > 0)
+		LeftShift_LessThan32( remainderBits );
 }
 
 
-void BigInteger::RightShift_LessThan32(int rightShiftBits)
+void BigInteger::RightShift_LessThan32(unsigned int rightShiftBits)
 {
 	unsigned int size = vec->size();
 
@@ -216,6 +184,59 @@ void BigInteger::RightShift_LessThan32(int rightShiftBits)
 }
 
 
+void BigInteger::RightShift32BitMultiple(unsigned int multiple)
+{
+	unsigned int size = vec->size();
+
+	unsigned int* arr = vec->GetArray();
+
+	for(int i=0; i<size-multiple; i++)
+		arr[i] = arr[i+multiple];
+
+	for(int i=size-multiple; i<size; i++)
+	{
+		arr[i] = 0;
+		vec->pop_back();
+	}
+}
+
+
+void BigInteger::RightShift(unsigned int numBits)
+{
+	if(numBits == 0)
+		return;
+
+	int sizeOfUInt = sizeof(unsigned int) * 8;
+
+	int num32BitsShift = numBits / sizeOfUInt;
+	int remainderBits = numBits % sizeOfUInt;
+
+	if(num32BitsShift)
+		RightShift32BitMultiple( num32BitsShift );
+
+	if(remainderBits > 0)
+		RightShift_LessThan32( remainderBits );
+}
+
+
+void BigInteger::MulBy2Power(int power)
+{
+	if(power < 32)
+		LeftShift_LessThan32(1);
+	else
+		LeftShift(power);
+}
+
+
+void BigInteger::DivideBy2Power(int power)
+{
+	if(power < 32)
+		RightShift_LessThan32(1);
+	else
+		RightShift(power);
+}
+
+
 void BigInteger::MultiplyBy2()
 {
 	LeftShift_LessThan32(1);
@@ -225,41 +246,6 @@ void BigInteger::MultiplyBy2()
 void BigInteger::DivideBy2()
 {
 	RightShift_LessThan32(1);
-}
-
-
-void BigInteger::DivideBy2Power(int power)
-{
-	if(power <= 0)
-		return;
-
-	int sizeOfUInt = sizeof(unsigned int) * 8;
-
-	int numIndexShift = power / sizeOfUInt;
-	int remainderBits = power % sizeOfUInt;
-
-	for(int i=0; i<numIndexShift; i++)
-		RightShift32Bits();
-
-	if(remainderBits > 0)
-		RightShift_LessThan32( remainderBits );
-}
-
-
-void BigInteger::MulBy2Power(int power)
-{
-	if(power <= 0)
-		return;
-
-	int sizeOfUInt = sizeof(unsigned int) * 8;
-
-	int numIndexShift = power / sizeOfUInt;
-	int remainderBits = power % sizeOfUInt;
-
-	LeftShift32BitMultiple(numIndexShift);
-
-	if(remainderBits > 0)
-		LeftShift_LessThan32( remainderBits );
 }
 
 
@@ -323,6 +309,8 @@ void BigInteger::Mul(BigInteger* b)
 
 BigInteger* BigInteger::Mul(BigInteger* a, BigInteger* b)
 {
+	//uint64_t startTime = GetTickCount();
+
     if(a->vec->size() < b->vec->size())
     {
         BigInteger* temp = a;
@@ -345,27 +333,6 @@ BigInteger* BigInteger::Mul(BigInteger* a, BigInteger* b)
     
     unsigned int* r = result->vec->GetArray();
     
-    uint64_t startTime = GetTickCount();
-    
-//    for(int bIndex=0; bIndex<bVecSize; bIndex++)
-//    {
-//        uint64_t val = bVecIter[ bIndex ];
-//        
-//        uint64_t mulSum = 0;
-//        uint64_t addSum = 0;
-//        
-//        for(int i=0; i<aVecSize; i++)
-//        {
-//            mulSum = (uint64_t)aVecIter[i] * val + (mulSum >> 32);
-//            addSum = (uint64_t)resultArr[bIndex + i] + ((mulSum << 32) >> 32) + (addSum >> 32);
-//            
-//            resultArr[bIndex + i] = (unsigned int) ((addSum << 32) >> 32);
-//        }
-//        
-//        resultArr[bIndex + aVecSize] = (addSum >> 32);
-//        resultArr[bIndex + aVecSize] += (mulSum >> 32);
-//    }
-    
     for(int j=0; j<bVecSize; j++)
     {
         unsigned int val = bVecIter[j];
@@ -378,8 +345,8 @@ BigInteger* BigInteger::Mul(BigInteger* a, BigInteger* b)
         {
             for(; i<aVecSize-10; i++)
             {
-//                mulSum = (uint64_t)aVecIter[i] * (uint64_t)val + r[i+j] + (mulSum >> 32);
-//                r[j+i] = (unsigned int) mulSum; i++;
+                //mulSum = (uint64_t)aVecIter[i] * (uint64_t)val + r[i+j] + (mulSum >> 32);
+                //r[j+i] = (unsigned int) mulSum; i++;
                 
                 r[i+j] = (unsigned int)  (mulSum = ((uint64_t)aVecIter[i] * val + r[i+j] + (mulSum >> 32)));    i++;
                 r[i+j] = (unsigned int)  (mulSum = ((uint64_t)aVecIter[i] * val + r[i+j] + (mulSum >> 32)));    i++;
@@ -397,16 +364,14 @@ BigInteger* BigInteger::Mul(BigInteger* a, BigInteger* b)
 
         for(; i<aVecSize; i++)
         {
-//            mulSum = (uint64_t)aVecIter[i] * (uint64_t)val + r[i+j] + (mulSum >> 32);
-//            r[j+i] = (unsigned int) ((mulSum << 32) >> 32);
+            //mulSum = (uint64_t)aVecIter[i] * (uint64_t)val + r[i+j] + (mulSum >> 32);
+            //r[j+i] = (unsigned int) ((mulSum << 32) >> 32);
             
             r[i+j] = (unsigned int)  (mulSum = ((uint64_t)aVecIter[i] * val + r[i+j] + (mulSum >> 32)));
         }
         
         r[j+aVecSize] = (mulSum >> 32);
     }
-    
-    mulCount += GetTickCount() - startTime;
     
     for(int i=result->vec->size()-1; i>=0; i--)
     {
@@ -415,6 +380,8 @@ BigInteger* BigInteger::Mul(BigInteger* a, BigInteger* b)
         else
             break;
     }
+
+	//mulCount+= GetTickCount() - startTime;
     
     return result;
 }
@@ -434,7 +401,7 @@ void BigInteger::Add(BigInteger* b)
 
 BigInteger* BigInteger::Add(BigInteger* a, BigInteger* b)
 {
-    uint64_t startTime = GetTickCount();
+    //uint64_t startTime = GetTickCount();
     
     if(a->vec->size() < b->vec->size())
     {
@@ -472,7 +439,7 @@ BigInteger* BigInteger::Add(BigInteger* a, BigInteger* b)
         result->vec->push_back((sum >> 32));
     }
     
-    addCount += GetTickCount() - startTime;
+    //addCount += GetTickCount() - startTime;
     
     return result;
 }
@@ -561,9 +528,11 @@ BigInteger* BigInteger::Subtract(BigInteger* a, BigInteger* b)
 
 string BigInteger::GetHexString()
 {
+	writeConsole("\n mulCount : %d", (int)mulCount);
+
     addCount = 0;
     mulCount = 0;
-    
+
 	const BaseConverter& dec2hex = BaseConverter::DecimalToHexConverter();
 
 	string hexString;
@@ -1057,3 +1026,105 @@ BigInteger::~BigInteger()
 //    //r[aVecSize] = (sum >> 32);
 //}
 //
+
+
+//char BigInteger::GetBitValue(unsigned int index)
+//{
+//    unsigned int arrIndex = index / 32;
+//    unsigned int bitIndex = index % 32;
+//    
+//    if(arrIndex >= vec->size())
+//		return -1;
+//    
+//    unsigned int val = vec->at(arrIndex);
+//    
+//    unsigned short leftShift = 31 - bitIndex;
+//    
+//    return ((val << leftShift) >> 31);
+//}
+
+
+//void BigInteger::LeftShift32Bits()
+//{
+//	unsigned int size = vec->size();
+//
+//	vec->push_back(0);
+//
+//	unsigned int* arr = vec->GetArray();
+//
+//	for(int i=size-1; i>=0; i--)
+//	{
+//		arr[i+1] = arr[i];
+//	}
+//
+//	arr[0] = 0;
+//}
+//
+//
+//void BigInteger::LeftShift32BitMultiple(int multiple)
+//{
+//	unsigned int size = vec->size();
+//
+//	for(int i=0; i<multiple; i++)
+//		vec->push_back(0);
+//
+//	unsigned int* arr = vec->GetArray();
+//
+//	for(int i=size-1; i>=0; i--)
+//		arr[i+multiple] = arr[i];
+//
+//	for(int i=0; i<multiple; i++)
+//		arr[i] = 0;
+//}
+//
+//
+//void BigInteger::RightShift32Bits()
+//{
+//	unsigned int size = vec->size();
+//
+//	vec->push_back(0);
+//
+//	unsigned int* arr = vec->GetArray();
+//
+//	for(int i=1; i<size; i++)
+//	{
+//		arr[i-1] = arr[i];
+//	}
+//
+//	vec->pop_back();
+//}
+
+
+//void BigInteger::DivideBy2Power(int power)
+//{
+//	if(power <= 0)
+//		return;
+//
+//	int sizeOfUInt = sizeof(unsigned int) * 8;
+//
+//	int numIndexShift = power / sizeOfUInt;
+//	int remainderBits = power % sizeOfUInt;
+//
+//	for(int i=0; i<numIndexShift; i++)
+//		RightShift32Bits();
+//
+//	if(remainderBits > 0)
+//		RightShift_LessThan32( remainderBits );
+//}
+//
+//
+//void BigInteger::MulBy2Power(int power)
+//{
+//	if(power <= 0)
+//		return;
+//
+//	int sizeOfUInt = sizeof(unsigned int) * 8;
+//
+//	int numIndexShift = power / sizeOfUInt;
+//	int remainderBits = power % sizeOfUInt;
+//
+//	LeftShift32BitMultiple(numIndexShift);
+//
+//	if(remainderBits > 0)
+//		LeftShift_LessThan32( remainderBits );
+//}
