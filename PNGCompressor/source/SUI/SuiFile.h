@@ -1,19 +1,19 @@
 #ifndef SUI_FILE_H
 #define SUI_FILE_H
 
-#include "Sui/SuiIncludes.h"
+#include "SUIIncludes.h"
 #include <vector>
 #include <string>
 using namespace std;
 
-class SuiFile
+class SUIFile
 {
 private:
 	string _filePath;
 	long _fileSize;
 
 public:
-	 SuiFile(string filePath);
+	 SUIFile(string filePath);
 
 	 long getSize();
 	 string getName();
@@ -34,7 +34,9 @@ public:
 	 bool deleteFile();
 
 	 vector<string> list();
-	 vector<SuiFile> listFiles();
+	 vector<SUIFile> listFiles();
+
+	 bool CreateFolderStructure(string folderPath, string newFolderPath);
 
 	 //bool canRead();
 	 //bool canWrite();

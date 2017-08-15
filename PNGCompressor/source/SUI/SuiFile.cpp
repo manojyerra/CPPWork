@@ -1,9 +1,9 @@
-#include "SuiFile.h"
+#include "SUIFile.h"
 #include <direct.h>
 #include <strsafe.h>
 #include <stdlib.h>
 
-SuiFile::SuiFile(string filePath)
+SUIFile::SUIFile(string filePath)
 {
 	_fileSize = 0;
 	_filePath = filePath;
@@ -24,17 +24,17 @@ SuiFile::SuiFile(string filePath)
 	}
 }
 
-long SuiFile::getSize()			
+long SUIFile::getSize()			
 {
 	return _fileSize;
 }
 
-string SuiFile::getPath()
+string SUIFile::getPath()
 {
 	return _filePath;
 }
 
-string SuiFile::getName()
+string SUIFile::getName()
 {
 	char drive[_MAX_DRIVE]; 
 	char dir[_MAX_DIR]; 
@@ -48,7 +48,7 @@ string SuiFile::getName()
 	return fileName;
 }
 
-string SuiFile::getParentFolder()
+string SUIFile::getParentFolder()
 {
 	char drive[_MAX_DRIVE]; 
 	char dir[_MAX_DIR]; 
@@ -62,7 +62,7 @@ string SuiFile::getParentFolder()
 	return fileName;
 }
 
-string SuiFile::getAbsolutePath()
+string SUIFile::getAbsolutePath()
 {
 	int BUFSIZE = 4096;
 	char buf[4096];
@@ -79,13 +79,13 @@ string SuiFile::getAbsolutePath()
 }
 
 
-bool SuiFile::isExists()			
+bool SUIFile::isExists()			
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	return(dwAttrib != INVALID_FILE_ATTRIBUTES);
 }
 
-bool SuiFile::isDirectory()
+bool SUIFile::isDirectory()
 {
 	string str = getAbsolutePath();
 	DWORD dwAttrib = GetFileAttributes(getAbsolutePath().c_str());
@@ -98,7 +98,7 @@ bool SuiFile::isDirectory()
 	return false;
 }
 
-bool SuiFile::isFile()
+bool SUIFile::isFile()
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	if(dwAttrib == INVALID_FILE_ATTRIBUTES)
@@ -106,25 +106,25 @@ bool SuiFile::isFile()
 	return !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-bool SuiFile::isReadOnly()
+bool SUIFile::isReadOnly()
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	return(dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_READONLY));
 }
 
-bool SuiFile::isHidden()
+bool SUIFile::isHidden()
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	return(dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_HIDDEN));
 }
 
-bool SuiFile::isCompressed()
+bool SUIFile::isCompressed()
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	return(dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_COMPRESSED));
 }
 
-bool SuiFile::isArchive()
+bool SUIFile::isArchive()
 {
 	DWORD dwAttrib = GetFileAttributes(_filePath.c_str());
 	return(dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_ARCHIVE));
@@ -132,13 +132,13 @@ bool SuiFile::isArchive()
 
 
 
-bool SuiFile::makeDirectory()
+bool SUIFile::makeDirectory()
 {
 	mkdir(_filePath.c_str());
 	return isExists();
 }
 
-bool SuiFile::createNewFile()
+bool SUIFile::createNewFile()
 {
 	bool success = false;
 
@@ -152,13 +152,27 @@ bool SuiFile::createNewFile()
 	return success;
 }
 
-bool SuiFile::deleteFile()
+bool SUIFile::deleteFile()
 {
 	return (DeleteFile(_filePath.c_str()) != 0);
 }
 
+bool SUIFile::CreateFolderStructure(string folderPath, string newFolderPath)
+{
+	SUIFile file(folderPath);
 
-vector<string> SuiFile::list()
+	if(file.isDirectory())
+	{
+		SUIFile newFolder( newFolderPath );
+		newFolder.makeDirectory();
+
+
+	}
+
+	return false;
+}
+
+vector<string> SUIFile::list()
 {
 	vector<string> fileNamesVec;
 
@@ -184,7 +198,7 @@ vector<string> SuiFile::list()
 		fullPath.append("\\");
 		fullPath.append(wfd.cFileName);
 
-		SuiFile suiFile(fullPath);
+		SUIFile suiFile(fullPath);
 
 		if(suiFile.getAbsolutePath().find(wfd.cFileName) == -1)
 			continue;
@@ -196,9 +210,9 @@ vector<string> SuiFile::list()
 	return fileNamesVec;
 }
 
-vector<SuiFile> SuiFile::listFiles()
+vector<SUIFile> SUIFile::listFiles()
 {
-	vector<SuiFile> filesVec;
+	vector<SUIFile> filesVec;
 
 	if(!isDirectory())
 		filesVec;
@@ -222,7 +236,7 @@ vector<SuiFile> SuiFile::listFiles()
 		fullPath.append("\\");
 		fullPath.append(wfd.cFileName);
 
-		SuiFile suiFile(fullPath);
+		SUIFile suiFile(fullPath);
 
 		if(suiFile.getAbsolutePath().find(wfd.cFileName) == -1)
 			continue;

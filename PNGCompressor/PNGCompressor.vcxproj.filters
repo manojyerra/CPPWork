@@ -235,6 +235,9 @@
     <ClCompile Include="source\Util\UtilFuncs.cpp">
       <Filter>source\Util</Filter>
     </ClCompile>
+    <ClCompile Include="source\SUI\SUIFile.cpp">
+      <Filter>source\SUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CFileReader.h">
@@ -404,6 +407,9 @@
     </ClInclude>
     <ClInclude Include="source\Util\UtilFuncs.h">
       <Filter>source\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SUI\SUIFile.h">
+      <Filter>source\SUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

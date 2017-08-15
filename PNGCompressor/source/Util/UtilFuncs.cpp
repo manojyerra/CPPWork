@@ -3,6 +3,10 @@
 #include "math.h"
 #include "stdlib.h"
 #include "memory.h"
+#include "Shlobj.h"
+#include <stdio.h>
+#include <wchar.h>
+#include <tchar.h>
 
 int UtilFuncs::floatToIntBits( float val )
 {
@@ -150,30 +154,30 @@ string UtilFuncs::SaveFileDialog(char *filter)
 	return fileNameStr;
 }
 
-//string UtilFuncs::OpenFolderDialer()
-//{
-//	BROWSEINFO bi = { 0 };
-//    bi.lpszTitle = _T("Pick a Directory");
-//    LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
-//    if ( pidl != 0 )
-//    {
-//        // get the name of the folder
-//        TCHAR path[MAX_PATH];
-//        if ( SHGetPathFromIDList ( pidl, path ) )
-//        {
-//            _tprintf ( _T("Selected Folder: %s\n"), path );
-//        }
-//
-//        // free memory used
-//        IMalloc * imalloc = 0;
-//        if ( SUCCEEDED( SHGetMalloc ( &imalloc )) )
-//        {
-//            imalloc->Free ( pidl );
-//            imalloc->Release ( );
-//        }
-//
-//		return string(path);
-//    }
-//
-//	return string();
-//}
+string UtilFuncs::OpenFolderDialer()
+{
+	BROWSEINFO bi = { 0 };
+    bi.lpszTitle = _T("Pick a Directory");
+    LPITEMIDLIST pidl = SHBrowseForFolder ( &bi );
+    if ( pidl != 0 )
+    {
+        // get the name of the folder
+        TCHAR path[MAX_PATH];
+        if ( SHGetPathFromIDList ( pidl, path ) )
+        {
+            _tprintf ( _T("Selected Folder: %s\n"), path );
+        }
+
+        // free memory used
+        IMalloc * imalloc = 0;
+        if ( SUCCEEDED( SHGetMalloc ( &imalloc )) )
+        {
+            imalloc->Free ( pidl );
+            imalloc->Release ( );
+        }
+
+		return string(path);
+    }
+
+	return string();
+}

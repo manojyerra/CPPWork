@@ -183,6 +183,7 @@
     <ClCompile Include="source\Math\GLMat.cpp" />
     <ClCompile Include="source\Math\TransformVertexBuf.cpp" />
     <ClCompile Include="source\Math\Vector3.cpp" />
+    <ClCompile Include="source\SUI\SUIFile.cpp" />
     <ClCompile Include="source\SUI\SUIKeyCombi.cpp" />
     <ClCompile Include="source\SUI\SUITextField.cpp" />
     <ClCompile Include="source\UIFrames\MainFrame.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="source\Math\GLMat.h" />
     <ClInclude Include="source\Math\TransformVertexBuf.h" />
     <ClInclude Include="source\Math\Vector3.h" />
+    <ClInclude Include="source\SUI\SUIFile.h" />
     <ClInclude Include="source\SUI\SUIKeyCombi.h" />
     <ClInclude Include="source\SUI\SUITextField.h" />
     <ClInclude Include="source\UIFrames\MainFrame.h" />
