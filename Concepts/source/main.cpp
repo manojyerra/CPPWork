@@ -5,6 +5,13 @@
 #include "Temp.h"
 #include "DefinesAndIncludes.h"
 
+#include <iostream>
+#include <algorithm>
+#include <numeric>
+#include <vector>
+using namespace std;
+
+
 #include <thread>
 
 void VirtualKeyWordUsage();
@@ -13,6 +20,7 @@ void EvalueStatements();
 void BitwiseOperators();
 void DifferenceBetweenCandCPP();
 void WhatIsThisKeyword();
+void SortVectorElements();
 
 void ThreadsExample();
 void Thread1Method();
@@ -21,21 +29,23 @@ void Thread2Method();
 
 int main()
 {
-	DifferenceBetweenCandCPP();
+	//DifferenceBetweenCandCPP();
 
-	WhatIsThisKeyword();
+	//WhatIsThisKeyword();
 
-	BitwiseOperators();
+	//BitwiseOperators();
 
-	ThreadsExample();
+	//ThreadsExample();
 
-	EvalueStatements();
+	//EvalueStatements();
 
-	VirtualKeyWordUsage();
+	//VirtualKeyWordUsage();
 
-	StaticAndDynamicCast();
+	//StaticAndDynamicCast();
 
-	print("\n\n************** End of program **************\n\n");
+	SortVectorElements();
+
+	writeStr("\n\n************** End of program **************\n\n");
 	return 0;
 }
 
@@ -73,14 +83,14 @@ void BitwiseOperators()
 	int a = 2;				//binary value is 10
 	int b = 3;				//binary value is 11
 	int c = a & b;			//binary result   10	-> 2
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	{
 	int a = 8;				//binary value is 1000
 	int b = 3;				//binary value is 0011
 	int c = a & b;			//binary result   0000	-> 0
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	{
@@ -88,7 +98,7 @@ void BitwiseOperators()
 	int b = 3;				//binary value is 011
 	int c = 4;				//binary value is 100
 	int d = a & b & c;		//binary result   000	-> 0
-	printf("d = %d", d);
+	writeStr("d = %d", d);
 	}
 
 
@@ -99,7 +109,7 @@ void BitwiseOperators()
 	int a = 8;				//binary value is 1000
 	int b = 3;				//binary value is 0011
 	int c = a | b;			//binary result   1011	-> 11
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 
@@ -110,7 +120,7 @@ void BitwiseOperators()
 	int a = 8;				//binary value is 1000
 	int b = 3;				//binary value is 0011
 	int c = a ^ b;			//binary result   1011	-> 11
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	//<< (left shift) Takes two numbers, left shifts the bits of first operand, 
@@ -120,7 +130,7 @@ void BitwiseOperators()
 	int a = 3;				//binary value is 11
 	int b = 2;				
 	int c = a << b;			//binary result   1100	-> 12
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	{
@@ -130,7 +140,7 @@ void BitwiseOperators()
 	
 	//c = a * 2 pow(b);
 
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	//>> (right shift) Takes two numbers, right shifts the bits of first operand, 
@@ -143,14 +153,14 @@ void BitwiseOperators()
 
 	//c = a * (1 / 2 pow(b));
 
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	{
 	int a = 8;				//binary value is 1000
 	int b = 2;				
 	int c = a >> b;			//binary result   10	-> 2
-	printf("c = %d", c);
+	writeStr("c = %d", c);
 	}
 
 	//~ (bitwise NOT) Takes one number and inverts all bits of it
@@ -158,14 +168,14 @@ void BitwiseOperators()
 	{
 	unsigned int a = 8;				//binary value is 00000000000000000000000000001000
 	unsigned int b = ~a;			//binary vlaue is 11111111111111111111111111110111		->	4294967287
-	printf("b = %d", b);
+	writeStr("b = %d", b);
 	}
 
 	{
 	int a = 8;						//binary value is 00000000000000000000000000001000
 	int b = ~a;						//binary vlaue is 11111111111111111111111111110111		->	4294967287
 	int c = 4294967287;				//value is -9
-	printf("b = %d", b);
+	writeStr("b = %d", b);
 	}
 
 	unsigned int color = 0xee00ff77;
@@ -190,11 +200,11 @@ void ThreadsExample()
 
 void Thread1Method()
 {
-	print("\n");
+	writeStr("\n");
 
 	for(int i=0; i<50; i++)
 	{
-		print("\nFrom Thread1Method %d", i);
+		writeStr("\nFrom Thread1Method %d", i);
 		Sleep(5);
 	}
 }
@@ -202,11 +212,11 @@ void Thread1Method()
 
 void Thread2Method()
 {
-	print("\n");
+	writeStr("\n");
 
 	for(int i=0; i<50; i++)
 	{
-		print("\nFrom Thread2Method %d", i);
+		writeStr("\nFrom Thread2Method %d", i);
 		Sleep(5);
 	}
 }
@@ -217,13 +227,13 @@ void EvalueStatements()
 	int a = 10;
 	int* b = &a;
 
-	print("\n starting values \n a = %d, *b = %d, address of b = %d", a, (*b), b);
+	writeStr("\n starting values \n a = %d, *b = %d, address of b = %d", a, (*b), b);
 
 	(*b)++;
-	print("\n after (*b)++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
+	writeStr("\n after (*b)++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
 
 	b++;
-	print("\n after b++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
+	writeStr("\n after b++ \n a = %d, *b = %d, address of b = %d", a, (*b), b);
 }
 
 
@@ -264,7 +274,7 @@ void StaticAndDynamicCast()
 		}
 		else
 		{
-			print("dynamic_cast from base pointer to Derived1 class is unsuccessful.");
+			writeStr("dynamic_cast from base pointer to Derived1 class is unsuccessful.");
 		}
 	}
 
@@ -323,14 +333,48 @@ void VirtualKeyWordUsage()
 }
 
 
+void SortVectorElements()
+{
+    int arr[] = {10, 20, 5, 23 ,42 , 15};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    vector<int> vect(arr, arr+n);
+ 
+    writeStr("\nVector is : ");
+
+    for (int i=0; i<n; i++)
+        writeStr(" %d ",vect[i]);
+ 
+    // Sorting the Vector in Ascending order
+    sort(vect.begin(), vect.end());
+ 
+    writeStr("\nVector after sorting is : ");
+    for (int i=0; i<n; i++)
+        writeStr(" %d ",vect[i]);
+ 
+    // Reversing the Vector
+    reverse(vect.begin(), vect.end());
+ 
+    writeStr("\nVector after reversing is : ");
+    for (int i=0; i<n; i++)
+        writeStr(" %d ",vect[i]);
+ 
+    writeStr("\nMaximum element of vector is: ");
+    writeStr("%d",*max_element(vect.begin(), vect.end()));
+ 
+    writeStr("\nMinimum element of vector is: ");
+    writeStr("%d",*min_element(vect.begin(), vect.end()));
+ 
+    // Starting the summation from 0
+    writeStr("\nThe summation of vector elements is: ");
+    writeStr("%d",accumulate(vect.begin(), vect.end(), 0));
+}
+
+
+
 /*
-6. Virtual keywords
 9. dynamic casting and static casting and interprete casting
 7. Private virtual functions behavior in run time polymorphism
-8. virtual destructors
 11. Multi Threading, Semaphores and Metaphores
-
-
 
 1. Containers in c++		http://www.geeksforgeeks.org/the-c-standard-template-library-stl/
 							http://www.cplusplus.com/reference/stl/

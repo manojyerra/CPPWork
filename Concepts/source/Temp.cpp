@@ -3,20 +3,20 @@
 
 Temp::Temp()
 {
-	print("\n Temp class constructor called...");
+	writeStr("\n Temp class constructor called...");
 }
 
 Temp::Temp(int param1, int param2)
 {
-	print("\n Temp class constructor called...");
+	writeStr("\n Temp class constructor called...");
 }
 
 Temp::~Temp()
 {
-	print("\n Temp class distructor called...");
+	writeStr("\n Temp class distructor called...");
 }
 	
 void Temp::tempFunc()
 {
-	print("\n Temp class tempFunc method called...");
+	writeStr("\n Temp class tempFunc method called...");
 }
