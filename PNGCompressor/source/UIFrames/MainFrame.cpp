@@ -10,9 +10,9 @@ MainFrame::MainFrame(int x, int y, int w, int h)
 {
 	_frame = new SUIFrame((float)x, (float)y, (float)w, (float)h, SUIFrame::V_ALIGNMENT);
 
-	_browseSingle = new SUIButton("Browse", this);
+	//_browseSingle = new SUIButton("Browse", this);
 	_browseMulti = new SUIButton("Browse PNG images", this);
-	_browseFolder = new SUIButton("Browse", this);
+	_browseFolder = new SUIButton("Browse Folder", this);
 
 	_level1 = new SUICheckBox("1", SUICheckBox::LEFT);
 	_level2 = new SUICheckBox("2", SUICheckBox::LEFT);
@@ -28,7 +28,7 @@ MainFrame::MainFrame(int x, int y, int w, int h)
 
 	//_frame->Add(_browseSingle);
 	_frame->Add(_browseMulti);
-	//_frame->Add(_browseFolder);
+	_frame->Add(_browseFolder);
 
 	_frame->Add(levelBox);
 	_frame->SetRemoveCloseOption(true);
@@ -84,6 +84,13 @@ void MainFrame::actionPerformed(SUIActionEvent e)
 			}
 		}
 	}
+	else if(com == _browseFolder)
+	{
+		string folderPath = UtilFuncs::OpenFolderDialer();
+		
+		string temp = folderPath;
+	}
+
 }
 
 void MainFrame::SetMaximize(bool maximize)
