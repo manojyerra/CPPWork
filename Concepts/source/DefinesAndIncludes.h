@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define print DefinesAndIncludes::write
+#define writeStr DefinesAndIncludes::write
 
 class DefinesAndIncludes
 {

@@ -3,6 +3,7 @@
 #include "Derived2.h"
 #include "Derived1Derived.h"
 #include "Temp.h"
+#include "MyVector.h"
 #include "DefinesAndIncludes.h"
 
 #include <iostream>
@@ -26,6 +27,30 @@ void ThreadsExample();
 void Thread1Method();
 void Thread2Method();
 
+Temp testMethod()
+{
+	Temp t;
+	return t;
+}
+
+int Max(Temp& a, Temp& b) {
+	return 10;
+}
+
+
+//template <typename K> K const& Max(K const& a, K const& b) {
+//	
+//	K const& val = a < b ? b : a;
+//	
+//	return val;
+//}
+
+
+//template <typename T>
+//inline T const& Max(T const& a, T const& b) {
+//	return a < b ? b : a;
+//}
+
 
 int main()
 {
@@ -43,9 +68,51 @@ int main()
 
 	//StaticAndDynamicCast();
 
+	MyVector<int> vec;
+
+	vec.push_back(10);
+	vec.push_back(20);
+	vec.push_back(30);
+	vec.push_back(40);
+
+	int val = vec.get(3);
+
+	int a[2][3] = {
+		{1,2,3},
+		{1,2,3}
+	};
+
+	int arrSize = 3;
+	int** b = new int*[arrSize];
+
+	for (int i = 0; i < arrSize; i++)
+	{
+		b[i] = new int[4];
+	}
+
+	for (int f = 0; f < arrSize; f++)
+	{
+		for (int s = 0; s < 4; s++)
+		{
+			b[f][s] = 10;
+		}
+	}
+
+	for (int i = 0; i < arrSize; i++)
+	{
+		delete[] b[i];
+	}
+
+	delete[] b;
+
+	int* sArr = new int[90];
+	delete[] sArr;
+
+
 	SortVectorElements();
 
 	writeStr("\n\n************** End of program **************\n\n");
+	
 	return 0;
 }
 

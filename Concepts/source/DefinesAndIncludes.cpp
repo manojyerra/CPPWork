@@ -1,5 +1,6 @@
 #include "DefinesAndIncludes.h"
 
+
 void DefinesAndIncludes::write(const char * pszFormat, ...)
 {
 	const int MAX_LEN = 10000;

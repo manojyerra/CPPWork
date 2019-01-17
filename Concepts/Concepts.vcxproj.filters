@@ -27,6 +27,9 @@
     <ClCompile Include="source\Derived2.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="source\MyVector.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\DefinesAndIncludes.h">
@@ -45,6 +48,9 @@
       <Filter>source</Filter>
     </ClInclude>
     <ClInclude Include="source\Derived2.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="source\MyVector.h">
       <Filter>source</Filter>
     </ClInclude>
   </ItemGroup>
